@@ -2,8 +2,9 @@ import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Http
-import Bootstrap.CDN as CDN
-import Bootstrap.Grid as Grid
+import Bootstrap.CDN as BsCDN
+import Bootstrap.Grid as BsGrid
+import Bootstrap.Button as BsButton
 
 
 -- MAIN
@@ -50,11 +51,25 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    Grid.container []
-        [ CDN.stylesheet -- creates an inline style node with the Bootstrap CSS
-        , Grid.row []
-            [ Grid.col []
-                [ text "Some content for my view here..."]
+    BsGrid.container []
+        [ BsCDN.stylesheet -- creates an inline style node with the Bootstrap CSS
+        , BsGrid.row []
+            [ BsGrid.col []
+                [
+                    Html.form [ style "background-color" "#ff9900", style "border-radius" "25px", class "py-2" ] [
+                        div [ class "form-group", class "py-2", class "px-4" ] [
+                            label [ for "emailinput" ] [ text "E-Mail" ],
+                            input [ id "emailinput", placeholder "E-Mail", class "form-control", type_ "email", required True ] []
+                        ],
+                        div [ class "form-group", class "py-2", class "px-4" ] [
+                            label [ for "passwordinput" ] [ text "Password" ],
+                            input [ id "passwordinput", placeholder "Password", class "form-control", type_ "password", required True ] []
+                        ],
+                        div [ class "py-2", class "px-4", class "d-flex", class "justify-content-end" ] [
+                            BsButton.button [ BsButton.primary, BsButton.attrs [ type_ "button" ] ] [ text "Submit" ]
+                        ]
+                    ]
+                ]
             ]
 
         ]
