@@ -82,7 +82,7 @@ view model =
         [ BsCDN.stylesheet -- creates an inline style node with the Bootstrap CSS
         , BsGrid.row []
             [ BsGrid.col []
-                [ Html.form [ style "background-color" "#ff9900", style "border-radius" "25px", class "py-2" ]
+                [ Html.form [ style "background-color" "#ff9900", style "border-radius" "10px", class "py-2" ]
                     [ div [ class "form-group", class "py-2", class "px-4" ]
                         [ label [ for "emailinput" ] [ text "E-Mail" ]
                         , input [ id "emailinput", placeholder "E-Mail", class "form-control", type_ "email", required True, onInput Email ] []
