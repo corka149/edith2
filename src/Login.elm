@@ -42,14 +42,7 @@ type Msg
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of
-        GotText result ->
-            case result of
-                Ok responseText ->
-                    ( { model | authenticated = True }, Cmd.none )
-
-                Err _ ->
-                    ( { model | authenticated = False }, Cmd.none )
+    ( model, Cmd.none )
 
 
 
