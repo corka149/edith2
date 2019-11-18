@@ -24,15 +24,12 @@ main =
 
 
 type alias Model =
-    { email : String
-    , password : String
-    , authenticated : Bool
-    }
+    { authenticated : Bool }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { email = "", password = "", authenticated = False }, Cmd.none )
+    ( { authenticated = False }, Cmd.none )
 
 
 
@@ -41,19 +38,11 @@ init _ =
 
 type Msg
     = GotText (Result Http.Error String)
-    | Password String
-    | Email String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Email email ->
-            ( { model | email = email }, Cmd.none )
-
-        Password password ->
-            ( { model | password = password }, Cmd.none )
-
         GotText result ->
             case result of
                 Ok responseText ->
@@ -91,11 +80,11 @@ view model =
                     ]
                     [ div [ class "form-group", class "py-2", class "px-4" ]
                         [ label [ for "emailinput" ] [ text "E-Mail" ]
-                        , input [ id "emailinput", placeholder "E-Mail", class "form-control", type_ "email", required True, onInput Email, name "email" ] []
+                        , input [ id "emailinput", placeholder "E-Mail", class "form-control", type_ "email", required True, name "email" ] []
                         ]
                     , div [ class "form-group", class "py-2", class "px-4" ]
                         [ label [ for "passwordinput" ] [ text "Password" ]
-                        , input [ id "passwordinput", placeholder "Password", class "form-control", type_ "password", required True, onInput Password, name "password" ] []
+                        , input [ id "passwordinput", placeholder "Password", class "form-control", type_ "password", required True, name "password" ] []
                         ]
                     , div [ class "py-2", class "px-4", class "d-flex", class "justify-content-end" ]
                         [ BsButton.button [ BsButton.primary, BsButton.attrs [] ] [ text "Submit" ]
@@ -103,18 +92,8 @@ view model =
                     ]
                 ]
             ]
-        , text (isAuthenticated model.authenticated)
         ]
 
 
 
 -- UTILS
-
-
-isAuthenticated authenticated =
-    case authenticated of
-        True ->
-            "Is authenticated"
-
-        False ->
-            "Unauthenticated"
