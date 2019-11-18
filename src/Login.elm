@@ -6,9 +6,6 @@ import Bootstrap.Grid as BsGrid
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput)
-import Http
-import Json.Encode as JE
 
 
 
@@ -37,7 +34,7 @@ init _ =
 
 
 type Msg
-    = GotText (Result Http.Error String)
+    = None
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
