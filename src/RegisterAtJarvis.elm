@@ -9,6 +9,7 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onInput, onSubmit)
 import Http
 import Json.Encode as JE
+import PasswordPolicy
 
 
 
@@ -98,10 +99,14 @@ view model =
                         ]
                     , div [ class "form-group", class "py-2", class "px-4" ]
                         [ label [ for "passwordinput" ] [ text "Password" ]
-                        , input [ id "passwordinput", placeholder "Password", class "form-control", type_ "password", required True, onInput Password, minlength 8 ] []
-                        , small [ class "form-text"
-                                , class "text-muted" ] 
-                                [ text "Password requires at least: one upper character, one lower character, one digit, one special character." ]
+                        , input [ id "passwordinput"
+                                , placeholder "Password"
+                                , class "form-control"
+                                , type_ "password"
+                                , required True
+                                , onInput Password
+                                , minlength 8 ] []
+                        , showPasswordHint model
                         ]
                     , div [ class "form-group", class "py-2", class "px-4" ]
                         [ label [ for "confirmPasswordinput" ] [ text "Confirm Password" ]
@@ -128,9 +133,20 @@ showMatchingHint model =
         small [ class "form-text", style "color" "red" ] [ text "Passwords do not match." ]
 
 
+showPasswordHint model =
+    if String.length model.password < 8 || PasswordPolicy.checkPassword model.password then
+        small [ class "form-text"
+              , class "text-muted" ] 
+              [ text "Password requires at least: one upper character, one lower character, one digit, one special character." ]
+    else
+        small [ class "form-text"
+              , style "color" "red"] 
+              [ text "Password requires at least: one upper character, one lower character, one digit, one special character." ]
+
+
 postnewUser : Model -> Cmd Msg
 postnewUser model =
-    if model.password == model.confirmPassword then
+    if model.password == model.confirmPassword && PasswordPolicy.checkPassword model.password then
         Http.post
         { url = "/jarvis/v1/accounts/users"
         , body = Http.jsonBody <| newUserEncoder model
