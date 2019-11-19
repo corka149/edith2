@@ -6,7 +6,9 @@ import Bootstrap.Grid as BsGrid
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onInput)
+import Html.Events exposing (onInput, onSubmit)
+import Http
+import Json.Encode as JE
 
 
 
@@ -22,12 +24,12 @@ main =
 
 
 type alias Model =
-    { password : String, confirmPassword : String }
+    { email : String, name : String, password : String, confirmPassword : String }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { password = "", confirmPassword = "" }, Cmd.none )
+    ( { email = "" , name = "", password = "", confirmPassword = "" }, Cmd.none )
 
 
 
@@ -35,19 +37,29 @@ init _ =
 
 
 type Msg
-    = Password String
+    = Email String
+    | Name String
+    | Password String
     | ConfirmPassword String
+    | PostNewUser
+    | GotText (Result Http.Error ())
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        Email email ->
+            ( { model | email = email}, Cmd.none)
+        Name name ->
+            ( { model | name = name}, Cmd.none)
         Password password ->
             ( { model | password = password}, Cmd.none )
-
         ConfirmPassword confirmPassword ->
             ( { model | confirmPassword = confirmPassword }, Cmd.none )
-
+        PostNewUser ->
+            ( model, postnewUser model)
+        GotText result ->
+            ( model, Cmd.none)
 
 
 -- SUBSCRIPTIONS
@@ -74,19 +86,22 @@ view model =
                     , class "py-2"
                     , action "/jarvis/v1/accounts/users"
                     , method "post"
+                    , onSubmit PostNewUser
                     ]
                     [ div [ class "form-group", class "py-2", class "px-4" ]
                         [ label [ for "emailinput" ] [ text "E-Mail" ]
-                        , input [ id "emailinput", placeholder "E-Mail", class "form-control", type_ "email", required True, name "email" ] []
+                        , input [ id "emailinput", placeholder "E-Mail", class "form-control", type_ "email", required True, onInput Email ] []
                         ]
                     , div [ class "form-group", class "py-2", class "px-4" ]
                         [ label [ for "nameinput" ] [ text "Name" ]
-                        , input [ id "nameinput", placeholder "Name", class "form-control", type_ "text", required True, name "name" ] []
+                        , input [ id "nameinput", placeholder "Name", class "form-control", type_ "text", required True, onInput Name ] []
                         ]
                     , div [ class "form-group", class "py-2", class "px-4" ]
                         [ label [ for "passwordinput" ] [ text "Password" ]
-                        , input [ id "passwordinput", placeholder "Password", class "form-control", type_ "password", required True, name "password", onInput Password ] []
-                        , small [ class "form-text", class "text-muted" ] [ text "Password requires at least: Two upper characters, two lower characters, 2 digits and special characters." ]
+                        , input [ id "passwordinput", placeholder "Password", class "form-control", type_ "password", required True, onInput Password, minlength 8 ] []
+                        , small [ class "form-text"
+                                , class "text-muted" ] 
+                                [ text "Password requires at least: one upper character, one lower character, one digit, one special character." ]
                         ]
                     , div [ class "form-group", class "py-2", class "px-4" ]
                         [ label [ for "confirmPasswordinput" ] [ text "Confirm Password" ]
@@ -111,3 +126,28 @@ showMatchingHint model =
         small [] [ text "\u{00A0}"]
     else
         small [ class "form-text", style "color" "red" ] [ text "Passwords do not match." ]
+
+
+postnewUser : Model -> Cmd Msg
+postnewUser model =
+    if model.password == model.confirmPassword then
+        Http.post
+        { url = "/jarvis/v1/accounts/users"
+        , body = Http.jsonBody <| newUserEncoder model
+        , expect = Http.expectWhatever GotText
+        }
+    else
+        Cmd.none
+
+
+newUserEncoder model =
+    JE.object
+    [ ("user", userAttributesEncoder model) ]
+
+
+userAttributesEncoder model =
+    JE.object
+    [ ("email", JE.string model.email)
+    , ("name", JE.string model.name)
+    , ("password", JE.string model.password)
+    ]
