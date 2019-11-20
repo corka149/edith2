@@ -34,7 +34,7 @@ init _ =
 
 
 type Msg
-    = None
+    = NoOp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
