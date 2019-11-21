@@ -30,7 +30,7 @@ type alias Model =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { email = "" , name = "", password = "", confirmPassword = "" }, Cmd.none )
+    ( { email = "", name = "", password = "", confirmPassword = "" }, Cmd.none )
 
 
 
@@ -50,17 +50,23 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Email email ->
-            ( { model | email = email}, Cmd.none)
+            ( { model | email = email }, Cmd.none )
+
         Name name ->
-            ( { model | name = name}, Cmd.none)
+            ( { model | name = name }, Cmd.none )
+
         Password password ->
-            ( { model | password = password}, Cmd.none )
+            ( { model | password = password }, Cmd.none )
+
         ConfirmPassword confirmPassword ->
             ( { model | confirmPassword = confirmPassword }, Cmd.none )
+
         PostNewUser ->
-            ( model, postnewUser model)
+            ( model, postnewUser model )
+
         GotText result ->
-            ( model, Cmd.none)
+            ( model, Cmd.none )
+
 
 
 -- SUBSCRIPTIONS
@@ -89,28 +95,36 @@ view model =
                     , method "post"
                     , onSubmit PostNewUser
                     ]
-                    [ div [ class "form-group", class "py-2", class "px-4" ]
-                        [ label [ for "emailinput" ] [ text "E-Mail" ]
-                        , input [ id "emailinput", placeholder "E-Mail", class "form-control", type_ "email", required True, onInput Email ] []
+                    [ div [ class "form-group", class "row", class "py-2", class "px-4" ]
+                        [ label [ for "emailinput", class "col-sm-3", class "col-form-label" ] [ text "E-Mail" ]
+                        , div [ class "col-sm-9" ]
+                            [ input [ id "emailinput", placeholder "E-Mail", class "form-control", type_ "email", required True, onInput Email ] [] ]
                         ]
-                    , div [ class "form-group", class "py-2", class "px-4" ]
-                        [ label [ for "nameinput" ] [ text "Name" ]
-                        , input [ id "nameinput", placeholder "Name", class "form-control", type_ "text", required True, onInput Name ] []
+                    , div [ class "form-group", class "row", class "py-2", class "px-4" ]
+                        [ label [ for "nameinput", class "col-sm-3", class "col-form-label" ] [ text "Name" ]
+                        , div [ class "col-sm-9" ]
+                            [ input [ id "nameinput", placeholder "Name", class "form-control", type_ "text", required True, onInput Name ] [] ]
                         ]
-                    , div [ class "form-group", class "py-2", class "px-4" ]
-                        [ label [ for "passwordinput" ] [ text "Password" ]
-                        , input [ id "passwordinput"
+                    , div [ class "form-group", class "row", class "py-2", class "px-4" ]
+                        [ label [ for "passwordinput", class "col-sm-3", class "col-form-label" ] [ text "Password" ]
+                        , div [ class "col-sm-9" ]
+                            [ input
+                                [ id "passwordinput"
                                 , placeholder "Password"
                                 , class "form-control"
                                 , type_ "password"
                                 , required True
                                 , onInput Password
-                                , minlength 8 ] []
-                        , showPasswordHint model
+                                , minlength 8
+                                ]
+                                []
+                            , showPasswordHint model
+                            ]
                         ]
-                    , div [ class "form-group", class "py-2", class "px-4" ]
-                        [ label [ for "confirmPasswordinput" ] [ text "Confirm Password" ]
-                        , input [ id "confirmPasswordinput", placeholder "Confirm Password", class "form-control", type_ "password", required True, onInput ConfirmPassword ] []
+                    , div [ class "form-group", class "row", class "py-2", class "px-4" ]
+                        [ label [ for "confirmPasswordinput", class "col-sm-3", class "col-form-label" ] [ text "Confirm Password" ]
+                        , div [ class "col-sm-9" ]
+                            [ input [ id "confirmPasswordinput", placeholder "Confirm Password", class "form-control", type_ "password", required True, onInput ConfirmPassword ] [] ]
                         , showMatchingHint model
                         ]
                     , div [ class "py-2", class "px-4", class "d-flex", class "justify-content-end" ]
@@ -128,42 +142,49 @@ view model =
 
 showMatchingHint model =
     if model.password == model.confirmPassword then
-        small [] [ text "\u{00A0}"]
+        small [] [ text "\u{00A0}" ]
+
     else
         small [ class "form-text", style "color" "red" ] [ text "Passwords do not match." ]
 
 
 showPasswordHint model =
     if String.length model.password < 8 || PasswordPolicy.checkPassword model.password then
-        small [ class "form-text"
-              , class "text-muted" ] 
-              [ text "Password requires at least: one upper character, one lower character, one digit, one special character." ]
+        small
+            [ class "form-text"
+            , class "text-muted"
+            ]
+            [ text "Password requires at least: one upper character, one lower character, one digit, one special character." ]
+
     else
-        small [ class "form-text"
-              , style "color" "red"] 
-              [ text "Password requires at least: one upper character, one lower character, one digit, one special character." ]
+        small
+            [ class "form-text"
+            , style "color" "red"
+            ]
+            [ text "Password requires at least: one upper character, one lower character, one digit, one special character." ]
 
 
 postnewUser : Model -> Cmd Msg
 postnewUser model =
     if model.password == model.confirmPassword && PasswordPolicy.checkPassword model.password then
         Http.post
-        { url = "/jarvis/v1/accounts/users"
-        , body = Http.jsonBody <| newUserEncoder model
-        , expect = Http.expectWhatever GotText
-        }
+            { url = "/jarvis/v1/accounts/users"
+            , body = Http.jsonBody <| newUserEncoder model
+            , expect = Http.expectWhatever GotText
+            }
+
     else
         Cmd.none
 
 
 newUserEncoder model =
     JE.object
-    [ ("user", userAttributesEncoder model) ]
+        [ ( "user", userAttributesEncoder model ) ]
 
 
 userAttributesEncoder model =
     JE.object
-    [ ("email", JE.string model.email)
-    , ("name", JE.string model.name)
-    , ("password", JE.string model.password)
-    ]
+        [ ( "email", JE.string model.email )
+        , ( "name", JE.string model.name )
+        , ( "password", JE.string model.password )
+        ]
