@@ -139,36 +139,24 @@ viewId category =
 
 
 viewName category =
-    if category.readOnly then
         div [ class "form-group", class "py-2", class "px-4" ]
             [ label [ for "nameinput" ] [ text "Name" ]
             , input
-                [ id "nameinput"
-                , placeholder "Name"
-                , class "form-control-plaintext"
+                ([ id "nameinput"
+                , placeholder "Name"                
                 , type_ "text"
                 , required True
-                , disabled True
-                , readonly True
                 , value category.name
-                ]
+                ] ++ switchReadOnlyOrInput category.readOnly)
                 []
             ]
 
+
+switchReadOnlyOrInput readOnly =
+    if readOnly then
+        [ disabled True, readonly True, class "form-control-plaintext"]
     else
-        div [ class "form-group", class "py-2", class "px-4" ]
-            [ label [ for "nameinput" ] [ text "Name" ]
-            , input
-                [ id "nameinput"
-                , placeholder "Name"
-                , class "form-control"
-                , type_ "text"
-                , required True
-                , onInput Name
-                , value category.name
-                ]
-                []
-            ]
+        [ class "form-control", onInput Name]
 
 
 
