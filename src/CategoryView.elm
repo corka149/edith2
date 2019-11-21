@@ -1,4 +1,4 @@
-module CategoryView exposing (Model, Msg(..), init, main, subscriptions, update, view)
+module CategoryView exposing (Category, Msg(..), init, main, subscriptions, update, view)
 
 import Bootstrap.Button as BsButton
 import Bootstrap.CDN as BsCDN
@@ -24,11 +24,11 @@ main =
 -- MODEL
 
 
-type alias Model =
+type alias Category =
     { id : Maybe Int, name : String }
 
 
-init : () -> ( Model, Cmd Msg )
+init : () -> ( Category, Cmd Msg )
 init _ =
     ( { id = Nothing, name = "" }, Cmd.none )
 
@@ -40,30 +40,30 @@ init _ =
 type Msg
     = Name String
     | CreateOrUpdateCategory
-    | GotCategory (Result Http.Error Model)
+    | GotCategory (Result Http.Error Category)
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
+update : Msg -> Category -> ( Category, Cmd Msg )
+update msg category =
     case msg of
         Name name ->
-            ({ model | name = name}, Cmd.none)    
+            ({ category | name = name}, Cmd.none)    
         CreateOrUpdateCategory ->
-            ( model, sendCategory model)
+            ( category, sendCategory category)
         GotCategory result ->
             case result of
                 Ok receivedCategory ->
                     ( receivedCategory, Cmd.none)            
                 Err _ ->
-                    ( model, Cmd.none)
+                    ( category, Cmd.none)
 
 
 
 -- SUBSCRIPTIONS
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions : Category -> Sub Msg
+subscriptions category =
     Sub.none
 
 
@@ -71,8 +71,8 @@ subscriptions model =
 -- VIEW
 
 
-view : Model -> Html Msg
-view model =
+view : Category -> Html Msg
+view category =
     BsGrid.container []
         [ BsCDN.stylesheet -- creates an inline style node with the Bootstrap CSS
         , BsGrid.row []
@@ -83,7 +83,8 @@ view model =
                     , class "py-2",
                     onSubmit CreateOrUpdateCategory
                     ]
-                    [ showId model                        
+                    [ h2 [ class "py-2", class "px-4" ] [ text "Category" ]
+                    , showId category                        
                     , div [ class "form-group", class "py-2", class "px-4" ]
                         [ label [ for "nameinput" ] [ text "Name" ]
                         , input [ id "nameinput", placeholder "Name"
@@ -104,9 +105,9 @@ view model =
 -- UTILS
 
 
-showId : Model -> Html Msg
-showId model =
-    case model.id of
+showId : Category -> Html Msg
+showId category =
+    case category.id of
         Just categoryId ->
             div [ class "form-group", class "py-2", class "px-4" ]
                         [ label [ for "idinput" ] [ text "Id" ]
@@ -123,33 +124,33 @@ showId model =
 -- HTTP
 
 
-sendCategory : Model -> Cmd Msg
-sendCategory model =
-    case model.id of
+sendCategory : Category -> Cmd Msg
+sendCategory category =
+    case category.id of
         Just categoryId ->
-            updateCategory model categoryId
+            updateCategory category categoryId
         Nothing ->
-            createCategory model
+            createCategory category
 
 
-updateCategory : Model -> Int -> Cmd Msg
-updateCategory model categoryId =
+updateCategory : Category -> Int -> Cmd Msg
+updateCategory category categoryId =
     Http.request
     { method = "PUT"
     , headers = [ ]
     , url = "/jarvis/v1/finances/categories/" ++ String.fromInt categoryId
-    , body = Http.jsonBody <| categoryEncoder model
+    , body = Http.jsonBody <| categoryEncoder category
     , expect = Http.expectJson GotCategory categoryAttributeDecoder
     , timeout = Nothing
     , tracker = Nothing
     }
 
 
-createCategory : Model -> Cmd Msg
-createCategory model =
+createCategory : Category -> Cmd Msg
+createCategory category =
     Http.post
     { url = "/jarvis/v1/finances/categories"
-    , body = Http.jsonBody <| categoryEncoder model
+    , body = Http.jsonBody <| categoryEncoder category
     , expect = Http.expectJson GotCategory categoryAttributeDecoder
     }
 
@@ -158,26 +159,26 @@ createCategory model =
 -- ENCODE
 
 
-categoryEncoder model =
+categoryEncoder category =
     JE.object
-    [ ("category", categoryAttributeEncoder model) ]
+    [ ("category", categoryAttributeEncoder category) ]
 
 
-categoryAttributeEncoder model =
+categoryAttributeEncoder category =
     JE.object
-    [ ("name", JE.string model.name)]
+    [ ("name", JE.string category.name)]
 
 
 
 -- DECODE
 
 
-categoryDecoder : DE.Decoder Model
+categoryDecoder : DE.Decoder Category
 categoryDecoder = 
     DE.field "category" (categoryAttributeDecoder)
 
 
 categoryAttributeDecoder =
-    DE.map2 Model
+    DE.map2 Category
         (DE.maybe (DE.field "id" DE.int))
         (DE.field "name" DE.string)
