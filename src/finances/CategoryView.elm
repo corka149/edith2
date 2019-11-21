@@ -50,6 +50,7 @@ type Msg
     | GotCategory (Result Http.Error CategoryDTO)
     | ToggleReadOnly
     | TriggerDeleteCategory
+    | GotDeleteResponse (Result Http.Error ())
 
 
 update : Msg -> Category -> ( Category, Cmd Msg )
@@ -73,8 +74,15 @@ update msg category =
             ( { category | readOnly = not category.readOnly }, Cmd.none )
 
         TriggerDeleteCategory ->
-            ( category, Cmd.none )
+            ( category, deleteCategory category )
 
+        GotDeleteResponse result ->
+            case result of
+                Ok _ ->
+                    ( {id = Nothing, name = "", readOnly = False}, Cmd.none)
+            
+                Err _ ->
+                    ( category, Cmd.none )
 
 
 -- SUBSCRIPTIONS
@@ -108,7 +116,9 @@ view category =
                     , div [ class "py-2", class "px-4", class "d-flex", class "justify-content-end" ]
                         [ viewDelete category
                         , viewEdit category
-                        , BsButton.button [ BsButton.primary, BsButton.attrs [ style "margin-left" "0.5rem" ] ] [ Icon.viewIcon Icon.save]
+                        , BsButton.button   [ BsButton.primary
+                                            , BsButton.attrs [ style "margin-left" "0.5rem" ] ] 
+                                            [ Icon.viewIcon Icon.save]
                         ]
                     ]
                 ]
@@ -119,7 +129,9 @@ view category =
 viewDelete category =
     case category.id of
         Just _ ->
-            BsButton.button [ BsButton.danger, BsButton.attrs [ onClick TriggerDeleteCategory ] ] [ Icon.viewIcon Icon.trash ]
+            BsButton.button [ BsButton.danger
+                            , BsButton.attrs [ onClick TriggerDeleteCategory, type_ "button" ] ]
+                            [ Icon.viewIcon Icon.trash ]
 
         Nothing ->
             div [] []
@@ -129,9 +141,7 @@ viewEdit category =
     case category.id of
         Just _ ->
             BsButton.button [ BsButton.secondary
-                            , BsButton.attrs 
-                            [ onClick ToggleReadOnly
-                            , style "margin-left" "0.5rem" ] ] 
+                            , BsButton.attrs [ onClick ToggleReadOnly , style "margin-left" "0.5rem", type_ "button" ] ] 
                             [ Icon.viewIcon Icon.pencilAlt ]
 
         Nothing ->
@@ -228,6 +238,24 @@ createCategory category =
         , body = Http.jsonBody <| categoryEncoder category
         , expect = Http.expectJson GotCategory categoryAttributeDecoder
         }
+
+
+deleteCategory : Category -> Cmd Msg
+deleteCategory category =
+    case category.id of
+        Just categoryId ->
+            Http.request
+            { method =  "DELETE"
+            , headers = []
+            , url = "/jarvis/v1/finances/categories/" ++ String.fromInt categoryId
+            , body = Http.emptyBody
+            , expect = Http.expectWhatever GotDeleteResponse
+            , timeout = Nothing
+            , tracker = Nothing
+            }
+    
+        Nothing ->
+            Cmd.none
 
 
 fromDTO : Category -> CategoryDTO -> Category
