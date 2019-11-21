@@ -49,7 +49,7 @@ update msg model =
         Name name ->
             ({ model | name = name}, Cmd.none)    
         CreateOrUpdateCategory ->
-            ( model, postNewCategory model)
+            ( model, sendCategory model)
         GotCategory result ->
             case result of
                 Ok receivedCategory ->
@@ -118,7 +118,35 @@ showId model =
         Nothing ->
             div [] []
 
-postNewCategory model =
+
+
+-- HTTP
+
+
+sendCategory : Model -> Cmd Msg
+sendCategory model =
+    case model.id of
+        Just categoryId ->
+            updateCategory model categoryId
+        Nothing ->
+            createCategory model
+
+
+updateCategory : Model -> Int -> Cmd Msg
+updateCategory model categoryId =
+    Http.request
+    { method = "PUT"
+    , headers = [ ]
+    , url = "/jarvis/v1/finances/categories/" ++ String.fromInt categoryId
+    , body = Http.jsonBody <| categoryEncoder model
+    , expect = Http.expectJson GotCategory categoryAttributeDecoder
+    , timeout = Nothing
+    , tracker = Nothing
+    }
+
+
+createCategory : Model -> Cmd Msg
+createCategory model =
     Http.post
     { url = "/jarvis/v1/finances/categories"
     , body = Http.jsonBody <| categoryEncoder model
