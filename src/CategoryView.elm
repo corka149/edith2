@@ -120,18 +120,26 @@ viewId : Category -> Html Msg
 viewId category =
     case category.id of
         Just categoryId ->
-            div [ class "form-group", class "py-2", class "px-4" ]
-                [ label [ for "idinput" ] [ text "Id" ]
-                , input
-                    [ id "idinput"
-                    , placeholder "Id"
-                    , class (if category.readOnly then "form-control-plaintext" else "form-control")
-                    , type_ "text"
-                    , value (String.fromInt categoryId)
-                    , disabled True
-                    , readonly True
+            div [ class "form-group", class "row", class "py-2", class "px-4" ]
+                [ label [ for "idinput", class "col-sm-3", class "col-form-label" ] [ text "Id" ]
+                , div [ class "col-sm-9" ]
+                    [ input
+                        [ id "idinput"
+                        , placeholder "Id"
+                        , class
+                            (if category.readOnly then
+                                "form-control-plaintext"
+
+                             else
+                                "form-control"
+                            )
+                        , type_ "text"
+                        , value (String.fromInt categoryId)
+                        , disabled True
+                        , readonly True
+                        ]
+                        []
                     ]
-                    []
                 ]
 
         Nothing ->
@@ -139,24 +147,29 @@ viewId category =
 
 
 viewName category =
-        div [ class "form-group", class "py-2", class "px-4" ]
-            [ label [ for "nameinput" ] [ text "Name" ]
-            , input
+    div [ class "form-group", class "row", class "py-2", class "px-4" ]
+        [ label [ for "nameinput", class "col-sm-3", class "col-form-label" ] [ text "Name" ]
+        , div [ class "col-sm-9" ]
+            [ input
                 ([ id "nameinput"
-                , placeholder "Name"                
-                , type_ "text"
-                , required True
-                , value category.name
-                ] ++ switchReadOnlyOrInput category.readOnly)
+                 , placeholder "Name"
+                 , type_ "text"
+                 , required True
+                 , value category.name
+                 ]
+                    ++ switchReadOnlyOrInput category.readOnly
+                )
                 []
             ]
+        ]
 
 
 switchReadOnlyOrInput readOnly =
     if readOnly then
-        [ disabled True, readonly True, class "form-control-plaintext"]
+        [ disabled True, readonly True, class "form-control-plaintext" ]
+
     else
-        [ class "form-control", onInput Name]
+        [ class "form-control", onInput Name ]
 
 
 
