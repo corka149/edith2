@@ -5,11 +5,11 @@ import Bootstrap.CDN as BsCDN
 import Bootstrap.Grid as BsGrid
 import Browser
 import Html exposing (..)
-import Html.Events exposing (onInput, onSubmit)
 import Html.Attributes exposing (..)
+import Html.Events exposing (onClick, onInput, onSubmit)
 import Http
-import Json.Encode as JE
 import Json.Decode as DE
+import Json.Encode as JE
 
 
 
@@ -25,12 +25,16 @@ main =
 
 
 type alias Category =
-    { id : Maybe Int, name : String }
+    { id : Maybe Int, name : String, readOnly : Bool }
+
+
+type alias CategoryDTO =
+    { id : Int, name : String }
 
 
 init : () -> ( Category, Cmd Msg )
 init _ =
-    ( { id = Nothing, name = "" }, Cmd.none )
+    ( { id = Nothing, name = "", readOnly = False }, Cmd.none )
 
 
 
@@ -40,22 +44,29 @@ init _ =
 type Msg
     = Name String
     | CreateOrUpdateCategory
-    | GotCategory (Result Http.Error Category)
+    | GotCategory (Result Http.Error CategoryDTO)
+    | ToggleReadOnly
 
 
 update : Msg -> Category -> ( Category, Cmd Msg )
 update msg category =
     case msg of
         Name name ->
-            ({ category | name = name}, Cmd.none)    
+            ( { category | name = name }, Cmd.none )
+
         CreateOrUpdateCategory ->
-            ( category, sendCategory category)
+            ( category, sendCategory category )
+
         GotCategory result ->
             case result of
                 Ok receivedCategory ->
-                    ( receivedCategory, Cmd.none)            
+                    ( fromDTO category receivedCategory, Cmd.none )
+
                 Err _ ->
-                    ( category, Cmd.none)
+                    ( category, Cmd.none )
+
+        ToggleReadOnly ->
+            ( { category | readOnly = not category.readOnly }, Cmd.none )
 
 
 
@@ -80,20 +91,15 @@ view category =
                 [ Html.form
                     [ style "background-color" "#ff9900"
                     , style "border-radius" "10px"
-                    , class "py-2",
-                    onSubmit CreateOrUpdateCategory
+                    , class "py-2"
+                    , onSubmit CreateOrUpdateCategory
                     ]
                     [ h2 [ class "py-2", class "px-4" ] [ text "Category" ]
-                    , showId category                        
-                    , div [ class "form-group", class "py-2", class "px-4" ]
-                        [ label [ for "nameinput" ] [ text "Name" ]
-                        , input [ id "nameinput", placeholder "Name"
-                                , class "form-control", type_ "text", required True 
-                                , onInput Name
-                                ] []
-                        ]
+                    , viewId category
+                    , viewName category
                     , div [ class "py-2", class "px-4", class "d-flex", class "justify-content-end" ]
-                        [ BsButton.button [ BsButton.primary, BsButton.attrs [] ] [ text "Submit" ]
+                        [ viewEdit category
+                        , BsButton.button [ BsButton.primary, BsButton.attrs [ style "margin-left" "0.5rem" ] ] [ text "Submit" ]
                         ]
                     ]
                 ]
@@ -101,23 +107,68 @@ view category =
         ]
 
 
+viewEdit category =
+    case category.id of
+        Just _ ->
+            BsButton.button [ BsButton.secondary, BsButton.attrs [ onClick ToggleReadOnly ] ] [ text "Edit" ]
 
--- UTILS
+        Nothing ->
+            span [] []
 
 
-showId : Category -> Html Msg
-showId category =
+viewId : Category -> Html Msg
+viewId category =
     case category.id of
         Just categoryId ->
             div [ class "form-group", class "py-2", class "px-4" ]
-                        [ label [ for "idinput" ] [ text "Id" ]
-                        , input [ id "idinput", placeholder "Id"
-                                , class "form-control", type_ "text", value(String.fromInt categoryId)
-                                , onInput Name, disabled True, readonly True
-                                ] []
-                        ]   
+                [ label [ for "idinput" ] [ text "Id" ]
+                , input
+                    [ id "idinput"
+                    , placeholder "Id"
+                    , class (if category.readOnly then "form-control-plaintext" else "form-control")
+                    , type_ "text"
+                    , value (String.fromInt categoryId)
+                    , disabled True
+                    , readonly True
+                    ]
+                    []
+                ]
+
         Nothing ->
             div [] []
+
+
+viewName category =
+    if category.readOnly then
+        div [ class "form-group", class "py-2", class "px-4" ]
+            [ label [ for "nameinput" ] [ text "Name" ]
+            , input
+                [ id "nameinput"
+                , placeholder "Name"
+                , class "form-control-plaintext"
+                , type_ "text"
+                , required True
+                , disabled True
+                , readonly True
+                , value category.name
+                ]
+                []
+            ]
+
+    else
+        div [ class "form-group", class "py-2", class "px-4" ]
+            [ label [ for "nameinput" ] [ text "Name" ]
+            , input
+                [ id "nameinput"
+                , placeholder "Name"
+                , class "form-control"
+                , type_ "text"
+                , required True
+                , onInput Name
+                , value category.name
+                ]
+                []
+            ]
 
 
 
@@ -129,6 +180,7 @@ sendCategory category =
     case category.id of
         Just categoryId ->
             updateCategory category categoryId
+
         Nothing ->
             createCategory category
 
@@ -136,23 +188,28 @@ sendCategory category =
 updateCategory : Category -> Int -> Cmd Msg
 updateCategory category categoryId =
     Http.request
-    { method = "PUT"
-    , headers = [ ]
-    , url = "/jarvis/v1/finances/categories/" ++ String.fromInt categoryId
-    , body = Http.jsonBody <| categoryEncoder category
-    , expect = Http.expectJson GotCategory categoryAttributeDecoder
-    , timeout = Nothing
-    , tracker = Nothing
-    }
+        { method = "PUT"
+        , headers = []
+        , url = "/jarvis/v1/finances/categories/" ++ String.fromInt categoryId
+        , body = Http.jsonBody <| categoryEncoder category
+        , expect = Http.expectJson GotCategory categoryAttributeDecoder
+        , timeout = Nothing
+        , tracker = Nothing
+        }
 
 
 createCategory : Category -> Cmd Msg
 createCategory category =
     Http.post
-    { url = "/jarvis/v1/finances/categories"
-    , body = Http.jsonBody <| categoryEncoder category
-    , expect = Http.expectJson GotCategory categoryAttributeDecoder
-    }
+        { url = "/jarvis/v1/finances/categories"
+        , body = Http.jsonBody <| categoryEncoder category
+        , expect = Http.expectJson GotCategory categoryAttributeDecoder
+        }
+
+
+fromDTO : Category -> CategoryDTO -> Category
+fromDTO oldCategory categoryDTO =
+    { id = Just categoryDTO.id, name = categoryDTO.name, readOnly = oldCategory.readOnly }
 
 
 
@@ -161,24 +218,24 @@ createCategory category =
 
 categoryEncoder category =
     JE.object
-    [ ("category", categoryAttributeEncoder category) ]
+        [ ( "category", categoryAttributeEncoder category ) ]
 
 
 categoryAttributeEncoder category =
     JE.object
-    [ ("name", JE.string category.name)]
+        [ ( "name", JE.string category.name ) ]
 
 
 
 -- DECODE
 
 
-categoryDecoder : DE.Decoder Category
-categoryDecoder = 
-    DE.field "category" (categoryAttributeDecoder)
+categoryDecoder : DE.Decoder CategoryDTO
+categoryDecoder =
+    DE.field "category" categoryAttributeDecoder
 
 
 categoryAttributeDecoder =
-    DE.map2 Category
-        (DE.maybe (DE.field "id" DE.int))
+    DE.map2 CategoryDTO
+        (DE.field "id" DE.int)
         (DE.field "name" DE.string)
