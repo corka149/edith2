@@ -114,7 +114,7 @@ view model =
                         , showMatchingHint model
                         ]
                     , div [ class "py-2", class "px-4", class "d-flex", class "justify-content-end" ]
-                        [ BsButton.button [ BsButton.primary, BsButton.attrs [] ] [ text "Submit" ]
+                        [ BsButton.button [ BsButton.primary, BsButton.attrs [] ] [ text "Save" ]
                         ]
                     ]
                 ]

@@ -99,7 +99,7 @@ view category =
                     , viewName category
                     , div [ class "py-2", class "px-4", class "d-flex", class "justify-content-end" ]
                         [ viewEdit category
-                        , BsButton.button [ BsButton.primary, BsButton.attrs [ style "margin-left" "0.5rem" ] ] [ text "Submit" ]
+                        , BsButton.button [ BsButton.primary, BsButton.attrs [ style "margin-left" "0.5rem" ] ] [ text "Save" ]
                         ]
                     ]
                 ]
