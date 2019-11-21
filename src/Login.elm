@@ -1,4 +1,4 @@
-module Main exposing (Model, Msg(..), init, main, subscriptions, update, view)
+module Main exposing (Credentials, Msg(..), init, main, subscriptions, update, view)
 
 import Bootstrap.Button as BsButton
 import Bootstrap.CDN as BsCDN
@@ -6,6 +6,9 @@ import Bootstrap.Grid as BsGrid
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (onInput, onSubmit)
+import Http
+import Json.Encode as EN
 
 
 
@@ -20,13 +23,13 @@ main =
 -- MODEL
 
 
-type alias Model =
-    { authenticated : Bool }
+type alias Credentials =
+    { email : String, password : String }
 
 
-init : () -> ( Model, Cmd Msg )
+init : () -> ( Credentials, Cmd Msg )
 init _ =
-    ( { authenticated = False }, Cmd.none )
+    ( { email = "", password = "" }, Cmd.none )
 
 
 
@@ -34,19 +37,33 @@ init _ =
 
 
 type Msg
-    = NoOp
+    = TryLogin
+    | GotLoginResponse (Result Http.Error ())
+    | Email String
+    | Password String
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    ( model, Cmd.none )
+update : Msg -> Credentials -> ( Credentials, Cmd Msg )
+update msg credentials =
+    case msg of
+        Email email ->
+            ( { credentials | email = email }, Cmd.none )
+
+        Password password ->
+            ( { credentials | password = password }, Cmd.none )
+
+        TryLogin ->
+            ( credentials, tryLogin credentials )
+
+        GotLoginResponse _ ->
+            ( credentials, Cmd.none )
 
 
 
 -- SUBSCRIPTIONS
 
 
-subscriptions : Model -> Sub Msg
+subscriptions : Credentials -> Sub Msg
 subscriptions model =
     Sub.none
 
@@ -55,7 +72,7 @@ subscriptions model =
 -- VIEW
 
 
-view : Model -> Html Msg
+view : Credentials -> Html Msg
 view model =
     BsGrid.container []
         [ BsCDN.stylesheet -- creates an inline style node with the Bootstrap CSS
@@ -65,16 +82,33 @@ view model =
                     [ style "background-color" "#ff9900"
                     , style "border-radius" "10px"
                     , class "py-2"
-                    , action "/jarvis/auth/signin"
-                    , method "post"
+                    , onSubmit TryLogin
                     ]
                     [ div [ class "form-group", class "py-2", class "px-4" ]
                         [ label [ for "emailinput" ] [ text "E-Mail" ]
-                        , input [ id "emailinput", placeholder "E-Mail", class "form-control", type_ "email", required True, name "email" ] []
+                        , input
+                            [ id "emailinput"
+                            , placeholder "E-Mail"
+                            , class "form-control"
+                            , type_ "email"
+                            , required True
+                            , name "email"
+                            , onInput Email
+                            ]
+                            []
                         ]
                     , div [ class "form-group", class "py-2", class "px-4" ]
                         [ label [ for "passwordinput" ] [ text "Password" ]
-                        , input [ id "passwordinput", placeholder "Password", class "form-control", type_ "password", required True, name "password" ] []
+                        , input
+                            [ id "passwordinput"
+                            , placeholder "Password"
+                            , class "form-control"
+                            , type_ "password"
+                            , required True
+                            , name "password"
+                            , onInput Password
+                            ]
+                            []
                         ]
                     , div [ class "py-2", class "px-4", class "d-flex", class "justify-content-end" ]
                         [ BsButton.button [ BsButton.primary, BsButton.attrs [] ] [ text "Submit" ]
@@ -86,4 +120,24 @@ view model =
 
 
 
--- UTILS
+-- HTTP
+
+
+tryLogin : Credentials -> Cmd Msg
+tryLogin credentials =
+    Http.post
+        { url = "/jarvis/auth/signin"
+        , expect = Http.expectWhatever GotLoginResponse
+        , body = Http.jsonBody <| credentialsEncoder credentials
+        }
+
+
+
+-- ENCODER
+
+
+credentialsEncoder credentials =
+    EN.object
+        [ ( "email", EN.string credentials.email )
+        , ( "password", EN.string credentials.password )
+        ]
