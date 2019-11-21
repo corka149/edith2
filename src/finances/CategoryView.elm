@@ -4,6 +4,9 @@ import Bootstrap.Button as BsButton
 import Bootstrap.CDN as BsCDN
 import Bootstrap.Grid as BsGrid
 import Browser
+import FontAwesome.Icon as Icon
+import FontAwesome.Solid as Icon
+import FontAwesome.Styles as Icon
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit)
@@ -46,6 +49,7 @@ type Msg
     | CreateOrUpdateCategory
     | GotCategory (Result Http.Error CategoryDTO)
     | ToggleReadOnly
+    | TriggerDeleteCategory
 
 
 update : Msg -> Category -> ( Category, Cmd Msg )
@@ -68,6 +72,9 @@ update msg category =
         ToggleReadOnly ->
             ( { category | readOnly = not category.readOnly }, Cmd.none )
 
+        TriggerDeleteCategory ->
+            ( category, Cmd.none )
+
 
 
 -- SUBSCRIPTIONS
@@ -86,6 +93,7 @@ view : Category -> Html Msg
 view category =
     BsGrid.container []
         [ BsCDN.stylesheet -- creates an inline style node with the Bootstrap CSS
+        , Icon.css
         , BsGrid.row []
             [ BsGrid.col []
                 [ Html.form
@@ -98,8 +106,9 @@ view category =
                     , viewId category
                     , viewName category
                     , div [ class "py-2", class "px-4", class "d-flex", class "justify-content-end" ]
-                        [ viewEdit category
-                        , BsButton.button [ BsButton.primary, BsButton.attrs [ style "margin-left" "0.5rem" ] ] [ text "Save" ]
+                        [ viewDelete category
+                        , viewEdit category
+                        , BsButton.button [ BsButton.primary, BsButton.attrs [ style "margin-left" "0.5rem" ] ] [ Icon.viewIcon Icon.save]
                         ]
                     ]
                 ]
@@ -107,10 +116,23 @@ view category =
         ]
 
 
+viewDelete category =
+    case category.id of
+        Just _ ->
+            BsButton.button [ BsButton.danger, BsButton.attrs [ onClick TriggerDeleteCategory ] ] [ Icon.viewIcon Icon.trash ]
+
+        Nothing ->
+            div [] []
+
+
 viewEdit category =
     case category.id of
         Just _ ->
-            BsButton.button [ BsButton.secondary, BsButton.attrs [ onClick ToggleReadOnly ] ] [ text "Edit" ]
+            BsButton.button [ BsButton.secondary
+                            , BsButton.attrs 
+                            [ onClick ToggleReadOnly
+                            , style "margin-left" "0.5rem" ] ] 
+                            [ Icon.viewIcon Icon.pencilAlt ]
 
         Nothing ->
             span [] []
