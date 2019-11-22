@@ -1,4 +1,4 @@
-module CategoryView exposing (Category, Msg(..), init, main, subscriptions, update, view)
+module CategoryDetails exposing (Category, Msg(..), init, main, subscriptions, update, view)
 
 import Bootstrap.Button as BsButton
 import Bootstrap.CDN as BsCDN
