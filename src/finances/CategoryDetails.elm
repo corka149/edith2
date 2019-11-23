@@ -101,7 +101,7 @@ view : Category -> Html Msg
 view category =
     BsGrid.container []
         [ BsCDN.stylesheet -- creates an inline style node with the Bootstrap CSS
-        , Icon.css
+        , Icon.css -- inline style node for FontAwesome
         , BsGrid.row []
             [ BsGrid.col []
                 [ Html.form
