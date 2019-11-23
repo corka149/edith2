@@ -59,6 +59,7 @@ type Msg
     | SaveTransaction
     | Description String
     | Recurring Bool
+    | Value String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -76,6 +77,9 @@ update msg model =
         Recurring recurring ->
             ( { model | activeTransaction = updateRecurring model.activeTransaction recurring }, Cmd.none )
 
+        Value transactionValue ->
+            ( { model | activeTransaction = updateValue model.activeTransaction transactionValue}, Cmd.none )
+
 
 updateDescription : Transaction -> String -> Transaction
 updateDescription transaction description =
@@ -85,6 +89,16 @@ updateDescription transaction description =
 updateRecurring : Transaction -> Bool -> Transaction
 updateRecurring transaction recurring =
     { transaction | recurring = recurring }
+
+
+updateValue : Transaction -> String -> Transaction
+updateValue transaction transactionValue =
+    case String.toFloat transactionValue of
+        Just val ->
+            { transaction | value = val}
+    
+        Nothing ->
+            transaction
 
 
 
@@ -141,6 +155,21 @@ view model =
                                     []
                                 , label [ for "recurringinput", class "custom-control-label" ] [ text "Recurring" ]
                                 ]
+                            ]
+                        ]
+                    , div [ class "form-group", class "row", class "py-2", class "px-4" ]
+                        [ label [ for "valueinput", class "col-sm-3", class "col-form-label" ] [ text "Value in €" ]
+                        , div [ class "col-sm-9" ]
+                            [ input
+                                [ id "valueinput"
+                                , placeholder "Value in €"
+                                , class "form-control"
+                                , type_ "number"
+                                , step "0.001"
+                                , required True
+                                , onInput Value
+                                ]
+                                []
                             ]
                         ]
                     ]
