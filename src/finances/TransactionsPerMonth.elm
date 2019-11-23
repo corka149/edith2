@@ -9,7 +9,7 @@ import FontAwesome.Solid as Icon
 import FontAwesome.Styles as Icon
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput, onSubmit, onCheck)
+import Html.Events exposing (onCheck, onClick, onInput, onSubmit)
 import Http
 import Json.Decode as DE
 import Json.Encode as JE
@@ -43,7 +43,7 @@ type alias Model =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { transactions = [], month = Jan, activeTransaction =  initTransaction}, getCurrentMonth )
+    ( { transactions = [], month = Jan, activeTransaction = initTransaction }, getCurrentMonth )
 
 
 initTransaction =
@@ -71,20 +71,20 @@ update msg model =
             ( model, Cmd.none )
 
         Description description ->
-            ( { model | activeTransaction = updateDescription model.activeTransaction description}, Cmd.none )
+            ( { model | activeTransaction = updateDescription model.activeTransaction description }, Cmd.none )
 
         Recurring recurring ->
-            ( { model | activeTransaction = updateRecurring model.activeTransaction recurring}, Cmd.none)
+            ( { model | activeTransaction = updateRecurring model.activeTransaction recurring }, Cmd.none )
 
 
 updateDescription : Transaction -> String -> Transaction
-updateDescription transaction description = 
-    { transaction | description = description}
+updateDescription transaction description =
+    { transaction | description = description }
 
 
 updateRecurring : Transaction -> Bool -> Transaction
-updateRecurring transaction recurring = 
-    { transaction | recurring = recurring}
+updateRecurring transaction recurring =
+    { transaction | recurring = recurring }
 
 
 
@@ -116,21 +116,32 @@ view model =
                     [ h2 [ class "py-2", class "px-4" ] [ text "Transaction" ]
                     , div [ class "form-group", class "row", class "py-2", class "px-4" ]
                         [ label [ for "descriptioninput", class "col-sm-3", class "col-form-label" ] [ text "Description" ]
-                        , div [ class "col-sm-9" ] [ input [ id "descriptioninput"
-                                                           , placeholder "Description"
-                                                           , class "form-control"
-                                                           , type_ "text"
-                                                           , required True
-                                                           , onInput Description ] [] ]
+                        , div [ class "col-sm-9" ]
+                            [ input
+                                [ id "descriptioninput"
+                                , placeholder "Description"
+                                , class "form-control"
+                                , type_ "text"
+                                , required True
+                                , onInput Description
+                                ]
+                                []
+                            ]
                         ]
                     , div [ class "form-group", class "row", class "py-2", class "px-4" ]
-                        [ label [ for "recurringinput", class "col-sm-3", class "col-form-label" ] [ text "Recurring" ]
-                        , div [ class "col-sm-9" ] [ input [ id "recurringinput"
-                                                           , placeholder "Recurring"
-                                                           , class "form-control"
-                                                           , type_ "checkbox"
-                                                           , required True
-                                                           , onCheck Recurring ] [] ]
+                        [ div [ class "col-sm-3" ] []
+                        , div [ class "col-sm-9" ]
+                            [ div [ class "custom-control", class "custom-checkbox" ]
+                                [ input
+                                    [ id "recurringinput"
+                                    , class "custom-control-input"
+                                    , type_ "checkbox"
+                                    , onCheck Recurring
+                                    ]
+                                    []
+                                , label [ for "recurringinput", class "custom-control-label" ] [ text "Recurring" ]
+                                ]
+                            ]
                         ]
                     ]
                 ]
