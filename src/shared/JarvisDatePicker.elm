@@ -11,6 +11,7 @@ import DatePicker exposing (DateEvent(..), defaultSettings)
 import Html exposing (Html, div, form, h1, input, label, text)
 import Html.Attributes exposing (class, type_, value)
 import Time exposing (Weekday(..))
+import VirtualDom exposing (node, attribute)
 
 
 
@@ -39,14 +40,8 @@ type alias Model =
 
 settings : DatePicker.Settings
 settings =
-    let
-        isDisabled date =
-            [ Sat, Sun ]
-                |> List.member (weekday date)
-    in
     { defaultSettings
-        | isDisabled = isDisabled
-        , inputClassList = [ ( "form-control", True ) ]
+        | inputClassList = [ ( "form-control", True ) ]
         , inputName = Just "date"
         , inputId = Just "date-field"
     }
@@ -103,6 +98,7 @@ view : Model -> Html Msg
 view ({ date, datePicker } as model) =
     div [ class "col-md-3" ]
         [ BsCDN.stylesheet -- creates an inline style node with the Bootstrap CSS
+        , datePickerCss
         , form []
             [ div [ class "form-group" ]
                 [ label [] [ text "Pick a date" ]
@@ -117,3 +113,7 @@ view ({ date, datePicker } as model) =
                 []
             ]
         ]
+
+
+datePickerCss =
+    node "link" [ attribute "rel" "stylesheet", attribute "href" "/static/css/jarvis.css"] []
