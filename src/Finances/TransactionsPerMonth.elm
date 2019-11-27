@@ -195,7 +195,7 @@ view model =
                             ]
                         ]
                     , div [ class "form-group", class "row", class "py-2", class "px-4" ]
-                        [ div [ class "col-sm-3" ] []
+                        [ label [ class "col-sm-3", class "col-form-label" ] [ text "Recurring on" ]
                         , div [ class "col-sm-9" ] [ DatePicker.view model.datePicker |> Html.map ExecutedOn ]
                         ]
                     ]

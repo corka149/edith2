@@ -97,21 +97,11 @@ changeDateOnEvent model event =
 
 view : Model -> Html Msg
 view ({ date, datePicker } as model) =
-    div [ class "col-md-3" ]
+    div [ ]
         [ BsCDN.stylesheet -- creates an inline style node with the Bootstrap CSS
         , datePickerCss
-        , form []
-            [ div [ class "form-group" ]
-                [ label [] [ text "Pick a date" ]
-                , DatePicker.view date settings datePicker
-                ]
-            , input
-                [ type_ "submit"
-                , class "btn btn-primary"
-                , value "Submit"
-                ]
-                []
-            ]
+        , div [ class "form-group" ]
+                [ DatePicker.view date settings datePicker ]
         ]
 
 
