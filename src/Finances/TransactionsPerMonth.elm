@@ -1,4 +1,4 @@
-module TransactionsPerMonth exposing (Category, Msg(..), init, main, subscriptions, update, view)
+module Finances.TransactionsPerMonth exposing (Category, Msg(..), init, main, subscriptions, update, view)
 
 import Bootstrap.Button as BsButton
 import Bootstrap.CDN as BsCDN
@@ -14,7 +14,10 @@ import Http
 import Json.Decode as DE
 import Json.Encode as JE
 import Task
-import Time exposing (..)
+import Time
+import Shared.JarvisDatePicker as DatePicker
+import Date
+import Iso8601
 
 
 
@@ -34,16 +37,19 @@ type alias Category =
 
 
 type alias Transaction =
-    { id : Maybe Int, description : String, executedOn : Maybe Time.Posix, recurring : Bool, value : Float, categoryId : Maybe Int }
+    { id : Maybe Int, description : String, executedOn : Maybe Date.Date, recurring : Bool, value : Float, categoryId : Maybe Int }
 
 
 type alias Model =
-    { transactions : List Transaction, month : Month, activeTransaction : Transaction }
+    { transactions : List Transaction, month : Time.Month, activeTransaction : Transaction, datePicker : DatePicker.Model }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { transactions = [], month = Jan, activeTransaction = initTransaction }, getCurrentMonth )
+    let
+        (datePicker , datePickerCmd) = DatePicker.init
+    in    
+    ( { transactions = [], month = Time.Jan, activeTransaction = initTransaction, datePicker = datePicker }, Cmd.map ExecutedOn datePickerCmd )
 
 
 initTransaction =
@@ -55,11 +61,12 @@ initTransaction =
 
 
 type Msg
-    = CurrentMonth Month
+    = CurrentMonth Time.Month
     | SaveTransaction
     | Description String
     | Recurring Bool
     | Value String
+    | ExecutedOn DatePicker.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -79,6 +86,13 @@ update msg model =
 
         Value transactionValue ->
             ( { model | activeTransaction = updateValue model.activeTransaction transactionValue}, Cmd.none )
+
+        ExecutedOn subMsg ->
+            let
+              ( datePicker, datePickerCmd ) = DatePicker.update subMsg model.datePicker  
+            in
+            ( { model | datePicker = datePicker, activeTransaction = updateExecutedOn model.activeTransaction datePicker}
+                , Cmd.map ExecutedOn datePickerCmd )
 
 
 updateDescription : Transaction -> String -> Transaction
@@ -100,6 +114,11 @@ updateValue transaction transactionValue =
         Nothing ->
             transaction
 
+
+updateExecutedOn : Transaction -> DatePicker.Model -> Transaction
+updateExecutedOn transaction datePicker =
+    { transaction | executedOn = datePicker.date}
+            
 
 
 -- SUBSCRIPTIONS
@@ -172,6 +191,10 @@ view model =
                                 []
                             ]
                         ]
+                    , div [ class "form-group", class "row", class "py-2", class "px-4" ]
+                        [ div [ class "col-sm-3" ] []
+                        , div [ class "col-sm-9" ] [ DatePicker.view model.datePicker |> Html.map ExecutedOn ] 
+                        ]
                     ]
                 ]
             ]
@@ -190,38 +213,39 @@ getCurrentMonth =
 numericMonth : Time.Month -> Int
 numericMonth month =
     case month of
-        Jan ->
+        Time.Jan ->
             1
 
-        Feb ->
+        Time.Feb ->
             2
 
-        Mar ->
+        Time.Mar ->
             3
 
-        Apr ->
+        Time.Apr ->
             4
 
-        May ->
+        Time.May ->
             5
 
-        Jun ->
+        Time.Jun ->
             6
 
-        Jul ->
+        Time.Jul ->
             7
 
-        Aug ->
+        Time.Aug ->
             8
 
-        Sep ->
+        Time.Sep ->
             9
 
-        Oct ->
+        Time.Oct ->
             10
 
-        Nov ->
+        Time.Nov ->
             11
 
-        Dec ->
+        Time.Dec ->
             12
+

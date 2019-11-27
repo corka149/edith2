@@ -1,4 +1,4 @@
-module JarvisDatePicker exposing (main)
+module Shared.JarvisDatePicker exposing (..)
 --
 -- Inspired from bootstrap example https://package.elm-lang.org/packages/CurrySoftware/elm-datepicker/latest/
 --
@@ -56,7 +56,7 @@ init =
     ( { date = Nothing
       , datePicker = datePicker
       }
-    , Cmd.map ToDatePicker datePickerFx
+    , datePickerFx
     )
 
 
@@ -64,31 +64,28 @@ init =
 -- UPDATE
 
 
-type Msg
-    = ToDatePicker DatePicker.Msg
+type alias Msg = DatePicker.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg ({ datePicker } as model) =
-    case msg of
-        ToDatePicker subMsg ->
-            let
-                ( newDatePicker, event ) =
-                    DatePicker.update settings subMsg datePicker
-            in
-            ( { model
-                | date =
-                    case event of
-                        Picked date ->
-                            Just date
+    let
+        ( newDatePicker, event ) =
+            DatePicker.update settings msg datePicker
+    in
+    ( { model | date = changeDateOnEvent model event, datePicker = newDatePicker
+        }
+    , Cmd.none
+    )
 
-                        _ ->
-                            model.date
-                , datePicker = newDatePicker
-              }
-            , Cmd.none
-            )
 
+changeDateOnEvent model event =
+    case event of
+        Picked date ->
+            Just date
+
+        _ ->
+            model.date
 
 
 -- VIEW
@@ -103,7 +100,6 @@ view ({ date, datePicker } as model) =
             [ div [ class "form-group" ]
                 [ label [] [ text "Pick a date" ]
                 , DatePicker.view date settings datePicker
-                    |> Html.map ToDatePicker
                 ]
             , input
                 [ type_ "submit"
@@ -117,3 +113,7 @@ view ({ date, datePicker } as model) =
 
 datePickerCss =
     node "link" [ attribute "rel" "stylesheet", attribute "href" "/static/css/jarvis.css"] []
+
+
+
+-- UTILS
