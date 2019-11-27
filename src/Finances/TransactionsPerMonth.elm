@@ -41,7 +41,7 @@ type alias Transaction =
 
 
 type alias Model =
-    { transactions : List Transaction, month : Time.Month, activeTransaction : Transaction, datePicker : DatePicker.Model }
+    { transactions : List Transaction, categories : List Category, month : Time.Month, activeTransaction : Transaction, datePicker : DatePicker.Model }
 
 
 init : () -> ( Model, Cmd Msg )
@@ -50,7 +50,9 @@ init _ =
         ( datePicker, datePickerCmd ) =
             DatePicker.init
     in
-    ( { transactions = [], month = Time.Jan, activeTransaction = initTransaction, datePicker = datePicker }, Cmd.map ExecutedOn datePickerCmd )
+    ( { transactions = [], categories = [], month = Time.Jan, activeTransaction = initTransaction, datePicker = datePicker }
+    , Cmd.batch [(Cmd.map ExecutedOn datePickerCmd), getCategories, getCurrentMonth]
+    )
 
 
 initTransaction =
@@ -68,6 +70,7 @@ type Msg
     | Recurring Bool
     | Value String
     | ExecutedOn DatePicker.Msg
+    | GotCategories (Result Http.Error (List Category))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -96,6 +99,14 @@ update msg model =
             ( { model | datePicker = datePicker, activeTransaction = updateExecutedOn model.activeTransaction datePicker }
             , Cmd.map ExecutedOn datePickerCmd
             )
+
+        GotCategories result ->
+            case result of
+                Ok categories ->
+                    ( { model | categories = categories}, Cmd.none )
+            
+                Err _ ->
+                    ( model, Cmd.none )
 
 
 updateDescription : Transaction -> String -> Transaction
@@ -198,10 +209,43 @@ view model =
                         [ label [ class "col-sm-3", class "col-form-label" ] [ text "Recurring on" ]
                         , div [ class "col-sm-9" ] [ DatePicker.view model.datePicker |> Html.map ExecutedOn ]
                         ]
+                    , div [ class "form-group", class "row", class "py-2", class "px-4" ]
+                        [ label [ for "categoryinput", class "col-sm-3", class "col-form-label" ] [ text "Category" ]
+                        , div [ class "col-sm-9" ] [ select [ id "categoryinput", class "custom-select" ] ([] ++ List.map toOption model.categories) ]
+                        ]
                     ]
                 ]
             ]
         ]
+
+
+toOption : Category -> Html Msg
+toOption category =
+    option [ value (String.fromInt category.id )] [ text category.name ]
+
+
+-- HTTP
+
+
+getCategories = 
+    Http.get
+    { url = "/jarvis/v1/finances/categories"
+    , expect = Http.expectJson GotCategories categoryListDecoder
+    }
+
+
+
+-- DECODER
+
+
+categoryListDecoder =
+    DE.list categoryAttributeDecoder
+
+
+categoryAttributeDecoder =
+    DE.map2 Category
+        (DE.field "id" DE.int)
+        (DE.field "name" DE.string)
 
 
 

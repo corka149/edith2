@@ -281,11 +281,6 @@ categoryAttributeEncoder category =
 -- DECODE
 
 
-categoryDecoder : DE.Decoder CategoryDTO
-categoryDecoder =
-    DE.field "category" categoryAttributeDecoder
-
-
 categoryAttributeDecoder =
     DE.map2 CategoryDTO
         (DE.field "id" DE.int)
