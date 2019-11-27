@@ -1,8 +1,8 @@
 module Shared.JarvisDatePicker exposing (..)
+
 --
 -- Inspired from bootstrap example https://package.elm-lang.org/packages/CurrySoftware/elm-datepicker/latest/
 --
-
 
 import Bootstrap.CDN as BsCDN
 import Browser
@@ -11,7 +11,7 @@ import DatePicker exposing (DateEvent(..), defaultSettings)
 import Html exposing (Html, div, form, h1, input, label, text)
 import Html.Attributes exposing (class, type_, value)
 import Time exposing (Weekday(..))
-import VirtualDom exposing (node, attribute)
+import VirtualDom exposing (attribute, node)
 
 
 
@@ -64,17 +64,20 @@ init =
 -- UPDATE
 
 
-type alias Msg = DatePicker.Msg
+type alias Msg =
+    DatePicker.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update msg ({ datePicker } as model) =
+update msg model =
     let
         ( newDatePicker, event ) =
-            DatePicker.update settings msg datePicker
+            DatePicker.update settings msg model.datePicker
     in
-    ( { model | date = changeDateOnEvent model event, datePicker = newDatePicker
-        }
+    ( { model
+        | date = changeDateOnEvent model event
+        , datePicker = newDatePicker
+      }
     , Cmd.none
     )
 
@@ -86,6 +89,7 @@ changeDateOnEvent model event =
 
         _ ->
             model.date
+
 
 
 -- VIEW
@@ -112,7 +116,7 @@ view ({ date, datePicker } as model) =
 
 
 datePickerCss =
-    node "link" [ attribute "rel" "stylesheet", attribute "href" "/static/css/jarvis.css"] []
+    node "link" [ attribute "rel" "stylesheet", attribute "href" "/static/css/jarvis.css" ] []
 
 
 

@@ -4,6 +4,7 @@ import Bootstrap.Button as BsButton
 import Bootstrap.CDN as BsCDN
 import Bootstrap.Grid as BsGrid
 import Browser
+import Date
 import FontAwesome.Icon as Icon
 import FontAwesome.Solid as Icon
 import FontAwesome.Styles as Icon
@@ -11,13 +12,12 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onCheck, onClick, onInput, onSubmit)
 import Http
+import Iso8601
 import Json.Decode as DE
 import Json.Encode as JE
+import Shared.JarvisDatePicker as DatePicker
 import Task
 import Time
-import Shared.JarvisDatePicker as DatePicker
-import Date
-import Iso8601
 
 
 
@@ -47,8 +47,9 @@ type alias Model =
 init : () -> ( Model, Cmd Msg )
 init _ =
     let
-        (datePicker , datePickerCmd) = DatePicker.init
-    in    
+        ( datePicker, datePickerCmd ) =
+            DatePicker.init
+    in
     ( { transactions = [], month = Time.Jan, activeTransaction = initTransaction, datePicker = datePicker }, Cmd.map ExecutedOn datePickerCmd )
 
 
@@ -85,14 +86,16 @@ update msg model =
             ( { model | activeTransaction = updateRecurring model.activeTransaction recurring }, Cmd.none )
 
         Value transactionValue ->
-            ( { model | activeTransaction = updateValue model.activeTransaction transactionValue}, Cmd.none )
+            ( { model | activeTransaction = updateValue model.activeTransaction transactionValue }, Cmd.none )
 
         ExecutedOn subMsg ->
             let
-              ( datePicker, datePickerCmd ) = DatePicker.update subMsg model.datePicker  
+                ( datePicker, datePickerCmd ) =
+                    DatePicker.update subMsg model.datePicker
             in
-            ( { model | datePicker = datePicker, activeTransaction = updateExecutedOn model.activeTransaction datePicker}
-                , Cmd.map ExecutedOn datePickerCmd )
+            ( { model | datePicker = datePicker, activeTransaction = updateExecutedOn model.activeTransaction datePicker }
+            , Cmd.map ExecutedOn datePickerCmd
+            )
 
 
 updateDescription : Transaction -> String -> Transaction
@@ -109,16 +112,16 @@ updateValue : Transaction -> String -> Transaction
 updateValue transaction transactionValue =
     case String.toFloat transactionValue of
         Just val ->
-            { transaction | value = val}
-    
+            { transaction | value = val }
+
         Nothing ->
             transaction
 
 
 updateExecutedOn : Transaction -> DatePicker.Model -> Transaction
 updateExecutedOn transaction datePicker =
-    { transaction | executedOn = datePicker.date}
-            
+    { transaction | executedOn = datePicker.date }
+
 
 
 -- SUBSCRIPTIONS
@@ -193,7 +196,7 @@ view model =
                         ]
                     , div [ class "form-group", class "row", class "py-2", class "px-4" ]
                         [ div [ class "col-sm-3" ] []
-                        , div [ class "col-sm-9" ] [ DatePicker.view model.datePicker |> Html.map ExecutedOn ] 
+                        , div [ class "col-sm-9" ] [ DatePicker.view model.datePicker |> Html.map ExecutedOn ]
                         ]
                     ]
                 ]
@@ -248,4 +251,3 @@ numericMonth month =
 
         Time.Dec ->
             12
-
