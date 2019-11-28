@@ -100,8 +100,7 @@ view ({ date, datePicker } as model) =
     div [ ]
         [ BsCDN.stylesheet -- creates an inline style node with the Bootstrap CSS
         , datePickerCss
-        , div [ class "form-group" ]
-                [ DatePicker.view date settings datePicker ]
+        , DatePicker.view date settings datePicker
         ]
 
 
