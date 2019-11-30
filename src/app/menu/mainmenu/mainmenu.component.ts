@@ -2,11 +2,11 @@ import {MediaMatcher} from '@angular/cdk/layout';
 import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
 
 @Component({
-  selector: 'app-sidenav',
-  templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.scss']
+  selector: 'app-mainmenu',
+  templateUrl: './mainmenu.component.html',
+  styleUrls: ['./mainmenu.component.scss']
 })
-export class SidenavComponent implements OnDestroy {
+export class MainMenuComponent implements OnDestroy {
   mobileQuery: MediaQueryList;
 
   fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);

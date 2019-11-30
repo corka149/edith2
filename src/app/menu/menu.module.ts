@@ -1,20 +1,24 @@
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
-import { ToolbarComponent } from './toolbar/toolbar.component';
-import { SidenavComponent } from './sidenav/sidenav.component';
+import { MainMenuComponent } from './mainmenu/mainmenu.component';
 import { MaterialDesignModule } from '../material-design/material-design.module';
+import { AppRoutingModule } from '../app-routing.module';
 
 
 
 @NgModule({
-  declarations: [ToolbarComponent, SidenavComponent],
+  declarations: [MainMenuComponent],
   imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
     CommonModule,
-    MaterialDesignModule
+    MaterialDesignModule,
   ],
   exports: [
-    ToolbarComponent,
-    SidenavComponent
+    MainMenuComponent
   ]
 })
 export class MenuModule { }
