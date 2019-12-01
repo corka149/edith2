@@ -1,93 +1,34 @@
-<header>
-  <section>
-    <!-- Dropdown structure shopping list -->
-    <ul id="shoppinglist_dropdown_desktop" class="dropdown-content">
-      <li>
-        <a routerLink="shoppinglists/current">{{ "Current" | translate }}</a>
-      </li>
-      <li>
-        <a routerLink="shoppinglists/all">{{ "All lists" | translate }}</a>
-      </li>
-    </ul>
+<div class="sidenav-container" [class.sidenav-is-mobile]="mobileQuery.matches">
+  <mat-toolbar color="primary" class="sidenav-toolbar">
+    <button mat-icon-button (click)="snav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <a routerLink="">
+      <img class="responsive-image" style="width: 6rem; padding-top: 0.5rem;" src="assets/img/logo_jarvis.svg">
+    </a>
+  </mat-toolbar>
 
-    <!-- DESKTOP -->
-    <!-- Main nav -->
-    <nav>
-      <div class="nav-wrapper" style="background: #ff9900;">
-        <a routerLink="" class="brand-logo" style="margin: 0.1rem">
-          <img class="responsive-img" style="width: 8rem;" src="assets/img/logo_jarvis.svg">
-        </a>
-        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-        <ul class="right hide-on-med-and-down" style="margin: 0rem 1rem 1rem 1rem">
-          <!-- Dropdown shopping list -->
-          <li><a class="dropdown-trigger" href="#!" data-target="shoppinglist_dropdown_desktop">
-              {{ "Shopping list" | translate}}
-              <i class="material-icons right">arrow_drop_down</i></a></li>
-          <li>
-            <a routerLink="usergroups">{{ "User groups" | translate}}</a>
-          </li>
-          <li>
-            <a href="">{{ "Logout" | translate}}</a>
-          </li>
-          <li>
-            <div style="font-size: 0.65rem; ; border-left: 0.1rem solid rgb(144,144,144); padding-left: 1rem;">
-                {{ "Signed in as" | translate}} Sebastian
-            </div>
-          </li>
-          <li>
-            <a routerLink="signin">{{ "Sign in" | translate}}</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+  <mat-sidenav-container class="sidenav-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+      fixedTopGap="56">
 
-    <!-- MOBILE -->
-    <!-- Dropdown structure shopping list -->
-    <ul id="shoppinglist_dropdown_mobile" class="dropdown-content">
-      <li>
-          <a routerLink="shoppinglists/current">{{ "Current" | translate }}</a>
-        </li>
-        <li>
-          <a routerLink="shoppinglists/all">{{ "All lists" | translate }}</a>
-      </li>
-    </ul>
-
-    <!-- Side nav -->
-    <ul class="sidenav" id="mobile-demo">
-      <!-- Dropdown shopping list -->
-      <li><a class="dropdown-trigger" href="#!" data-target="shoppinglist_dropdown_mobile">
+      <mat-nav-list>
+        <button mat-button [matMenuTriggerFor]="menu">
           {{ "Shopping list" | translate}}
-          <i class="material-icons right">arrow_drop_down</i></a></li>
-      <li>
-          <a routerLink="usergroups">{{ "User groups" | translate}}</a>
-      </li>
-      <li>
-        <a href="">{{ "Logout" | translate}}</a>
-      </li>
-      <li>
-        <div class="center-align" style="font-size: 0.7rem; border-top: 0.1rem solid #000;">
-            {{ "Sign in as Sebastian" | translate}}
-        </div>
-      </li>
-      <li>
-        <a routerLink="signin">{{ "Sign in" | translate}}</a>
-      </li>
-    </ul>
-  </section>
-</header>
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <a routerLink="shoppinglists/current" mat-menu-item>{{ "Current" | translate }}</a>
+          <a routerLink="shoppinglists/all" mat-menu-item>{{ "All lists" | translate }}</a>
+        </mat-menu>
+        <a mat-list-item routerLink="usergroups">{{ "User groups" | translate}}</a>
+        <a mat-list-item href="">{{ "Logout" | translate}}</a>
+        <a mat-list-item routerLink="signin">{{ "Sign in" | translate}}</a>
+      </mat-nav-list>
+    </mat-sidenav>
 
-<main role="main" class="container">
-  <router-outlet></router-outlet>
-</main>
-
-<!-- <footer>
-  <div>
-    <span style="color: #429add;">
-      <a href=" https://github.com/corka149/jarvis">jARVIS - Made by corka149</a> &nbsp;|&nbsp; <i
-        class="material-icons" style="font-size: 0.8rem;">language</i>
-      <a href="">DE</a>
-      &nbsp;
-      <a href="">EN</a>
-    </span>
-  </div>
-</footer> -->
+    <mat-sidenav-content class="main-container">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

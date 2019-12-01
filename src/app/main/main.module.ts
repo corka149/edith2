@@ -6,6 +6,7 @@ import { MainComponent } from './main/main.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { TranslationsModule } from '../translations/translations.module';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { MaterialDesignModule } from '../material-design/material-design.module';
 
 
 
@@ -16,7 +17,8 @@ import { WelcomeComponent } from './welcome/welcome.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     CommonModule,
-    TranslationsModule
+    TranslationsModule,
+    MaterialDesignModule
   ],
   exports: [
     MainComponent
