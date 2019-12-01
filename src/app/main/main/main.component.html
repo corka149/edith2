@@ -1,21 +1,93 @@
-<div class="sidenav-container" [class.sidenav-is-mobile]="mobileQuery.matches">
-  <mat-toolbar color="primary" class="sidenav-toolbar">
-    <button mat-icon-button (click)="snav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <h1 class="sidenav-app-name">jARVIS</h1>
-  </mat-toolbar>
+<header>
+  <section>
+    <!-- Dropdown structure shopping list -->
+    <ul id="shoppinglist_dropdown_desktop" class="dropdown-content">
+      <li>
+        <a href="">Currrent</a>
+      </li>
+      <li>
+        <a href="">All lists</a>
+      </li>
+    </ul>
 
-  <mat-sidenav-container class="sidenav-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
-      fixedTopGap="56">
-      <mat-nav-list>
-        <a mat-list-item routerLink="{{ entry.path }}" *ngFor="let entry of menuEntries">{{ entry.name | translate:"finances" }}</a>
-      </mat-nav-list>
-    </mat-sidenav>
+    <!-- DESKTOP -->
+    <!-- Main nav -->
+    <nav>
+      <div class="nav-wrapper" style="background: #ff9900;">
+        <a href="/" class="brand-logo" style="margin: 0.1rem">
+          <img class="responsive-img" style="width: 8rem;" src="assets/img/logo_jarvis.svg">
+        </a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down" style="margin: 0rem 1rem 1rem 1rem">
+          <!-- Dropdown shopping list -->
+          <li><a class="dropdown-trigger" href="#!" data-target="shoppinglist_dropdown_desktop">
+              Shopping list
+              <i class="material-icons right">arrow_drop_down</i></a></li>
+          <li>
+            <a href="">User groups</a>
+          </li>
+          <li>
+            <a href="">Logout</a>
+          </li>
+          <li>
+            <div style="font-size: 0.65rem; ; border-left: 0.1rem solid rgb(144,144,144); padding-left: 1rem;">
+              Signed in as Sebastian
+            </div>
+          </li>
+          <li>
+            <a href="">Sign in</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
-    <mat-sidenav-content>
-        <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-</div>
+    <!-- MOBILE -->
+    <!-- Dropdown structure shopping list -->
+    <ul id="shoppinglist_dropdown_mobile" class="dropdown-content">
+      <li>
+        <a href="">Current</a>
+      </li>
+      <li>
+        <a href="">All lists</a>
+      </li>
+    </ul>
+
+    <!-- Side nav -->
+    <ul class="sidenav" id="mobile-demo">
+      <!-- Dropdown shopping list -->
+      <li><a class="dropdown-trigger" href="#!" data-target="shoppinglist_dropdown_mobile">
+          Shopping list
+          <i class="material-icons right">arrow_drop_down</i></a></li>
+      <li>
+        <a href="">User groups</a>
+      </li>
+      <li>
+        <a href="">Logout</a>
+      </li>
+      <li>
+        <div class="center-align" style="font-size: 0.7rem; border-top: 0.1rem solid #000;">
+          Sign in as Sebastian
+        </div>
+      </li>
+      <li>
+        <a href="">Sign in</a>
+      </li>
+    </ul>
+  </section>
+</header>
+
+<main role="main" class="container">
+  <router-outlet></router-outlet>
+</main>
+
+<footer>
+  <div>
+    <span style="color: #429add;">
+      <a href=" https://github.com/corka149/jarvis">jARVIS - Made by corka149</a> &nbsp;|&nbsp; <i
+        class="material-icons" style="font-size: 0.8rem;">language</i>
+      <a href="">DE</a>
+      &nbsp;
+      <a href="">EN</a>
+    </span>
+  </div>
+</footer>
