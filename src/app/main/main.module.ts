@@ -2,23 +2,25 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
-import { MainMenuComponent } from './mainmenu/mainmenu.component';
+import { MainComponent } from './main/main.component';
 import { MaterialDesignModule } from '../material-design/material-design.module';
 import { AppRoutingModule } from '../app-routing.module';
+import { TranslationsModule } from '../translations/translations.module';
 
 
 
 @NgModule({
-  declarations: [MainMenuComponent],
+  declarations: [MainComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     CommonModule,
     MaterialDesignModule,
+    TranslationsModule
   ],
   exports: [
-    MainMenuComponent
+    MainComponent
   ]
 })
-export class MenuModule { }
+export class MainModule { }

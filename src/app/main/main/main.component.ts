@@ -1,15 +1,18 @@
 import {MediaMatcher} from '@angular/cdk/layout';
 import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
+import { MenuEntry } from './models/menu-entry';
 
 @Component({
-  selector: 'app-mainmenu',
-  templateUrl: './mainmenu.component.html',
-  styleUrls: ['./mainmenu.component.scss']
+  selector: 'app-main',
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.scss']
 })
-export class MainMenuComponent implements OnDestroy {
+export class MainComponent implements OnDestroy {
   mobileQuery: MediaQueryList;
 
-  fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
+  menuEntries: MenuEntry[] = [
+    {name: 'All shopping lists', path: '/v1/shoppinglists/'}
+  ];
 
   private mobileQueryListener: () => void;
 

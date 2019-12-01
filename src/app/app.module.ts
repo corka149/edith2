@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { MenuModule } from './menu/menu.module';
+import { MainModule } from './main/main.module';
+
 
 @NgModule({
   declarations: [
@@ -10,9 +11,10 @@ import { MenuModule } from './menu/menu.module';
   ],
   imports: [
     BrowserModule,
-    MenuModule
+    MainModule
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
