@@ -1,8 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslationService } from './translation.service';
+import { from, Observable } from 'rxjs';
+
 
 @Pipe({
-  name: 'translate'
+  name: 'translate',
+  pure: false
 })
 export class TranslatePipe implements PipeTransform {
 
@@ -10,11 +13,11 @@ export class TranslatePipe implements PipeTransform {
     private translationService: TranslationService
   ) {}
 
-  transform(value: any, ...args: any[]): any {
-    console.log(this.translationService);
-    console.log(value);
-    console.log(args);
-    return null;
+  transform(value: any, ...args: any[]): string {
+    return this.getTranslation(value, args);
   }
 
+  private getTranslation(key: string, args: string[]): string {
+    return args.length === 0 ? this.translationService.getText(key) : this.translationService.dGetText(args[0], key);
+  }
 }
