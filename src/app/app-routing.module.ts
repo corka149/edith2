@@ -4,7 +4,11 @@ import { WelcomeComponent } from './main/welcome/welcome.component';
 
 
 const routes: Routes = [
-  { path: '', component: WelcomeComponent }
+  { path: '', component: WelcomeComponent },
+  { path: 'shoppinglists/current', component: WelcomeComponent},
+  { path: 'shoppinglists/all', component: WelcomeComponent},
+  { path: 'usergroups', component: WelcomeComponent},
+  { path: 'signin', component: WelcomeComponent}
 ];
 
 @NgModule({
