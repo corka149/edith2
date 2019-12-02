@@ -30,12 +30,37 @@ body {
   grid-template-rows: auto 1fr auto;
 }
 
-.main-container {
-    padding: 1rem;
-    text-align: center;
-}
-
 .responsive-image {
     max-width: 100%;
     height: auto;
+}
+
+span.filler {
+  /* This fills the remaining space, by using flexbox. 
+     Every toolbar row uses a flexbox row layout. */
+     flex: 1 1 auto;
+}
+
+span.half-filler {
+  /* This fills the remaining space, by using flexbox. 
+     Every toolbar row uses a flexbox row layout. */
+     flex: 0.5 0.5 auto;
+}
+
+@media (min-width: 1024px) {
+  .main-container {
+    margin-left: 33%;
+    padding-right: 33%;
+  }
+}
+
+@media (min-width: 800px) and (max-width: 1024px) {
+  .main-container {
+    margin-left: 20%;
+    padding-right: 20%;
+  }
+}
+
+.main-container {
+  padding: 1rem;
 }

@@ -3,9 +3,17 @@
     <button mat-icon-button (click)="snav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
+    <span class="half-filler"></span>
     <a routerLink="">
       <img class="responsive-image" style="width: 6rem; padding-top: 0.5rem;" src="assets/img/logo_jarvis.svg">
     </a>
+    <span class="half-filler"></span>
+    <a mat-button routerLink="">
+      {{ "Sign in" | translate }}
+    </a>
+    <!-- <a mat-button routerLink="">
+      {{ "Sign out" | translate }}
+    </a> -->
   </mat-toolbar>
 
   <mat-sidenav-container class="sidenav-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
