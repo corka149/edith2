@@ -47,20 +47,20 @@ span.half-filler {
      flex: 0.5 0.5 auto;
 }
 
+.main-container {
+  padding: 1rem;
+}
+
 @media (min-width: 1024px) {
   .main-container {
-    margin-left: 33%;
-    padding-right: 33%;
+    margin-left: 33% !important;
+    padding-right: 33% !important;
   }
 }
 
 @media (min-width: 800px) and (max-width: 1024px) {
   .main-container {
-    margin-left: 20%;
-    padding-right: 20%;
+    margin-left: 20% !important;
+    padding-right: 20% !important;
   }
-}
-
-.main-container {
-  padding: 1rem;
 }
