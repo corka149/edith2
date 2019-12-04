@@ -1,1 +1,21 @@
-<p>login works!</p>
+<form [formGroup]="loginForm" (ngSubmit)="login()">
+    <div>
+        <mat-form-field style="width: 100%;">
+            <mat-label>{{ "E-Mail" | translate }}</mat-label>
+            <input matInput type="email" placeholder="{{ 'E-Mail' | translate }}" formControlName="email" required>
+            <mat-error *ngIf="email.errors && email.errors.required">{{ "E-Mail is required" | translate }}</mat-error>
+            <mat-error *ngIf="email.errors && email.errors.email">I{{ "Invalid E-Mail" | translate }}</mat-error>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field style="width: 100%;">
+            <mat-label>{{ "Password" | translate }}</mat-label>
+            <input matInput type="password" placeholder="{{ 'Password' | translate }}" formControlName="password" required>
+            <mat-error *ngIf="password.errors && password.errors.required">{{ "Password is required" | translate }}</mat-error>
+        </mat-form-field>
+    </div>
+    <div style="display: flex;">
+        <span class="filler"></span>
+        <button [disabled]="loginForm.invalid" type="submit" mat-flat-button color="primary">{{ "Submit" | translate }}</button> 
+    </div>
+</form>

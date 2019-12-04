@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { MainModule } from './main/main.module';
+import { AccountModule } from './account/account.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { MainModule } from './main/main.module';
   ],
   imports: [
     BrowserModule,
-    MainModule
+    MainModule,
+    AccountModule
   ],
   providers: [
   ],
