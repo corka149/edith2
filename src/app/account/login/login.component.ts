@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Validators, FormControl, FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
 import { AuthenticationService } from '../services/authentication.service';
+import { Subscription, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 
 @Component({
@@ -8,13 +10,16 @@ import { AuthenticationService } from '../services/authentication.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.email, Validators.required]],
     password: ['', Validators.required]
   });
+  authenticated = false;
+  loginFailed = false;
 
+  private subscriptions = new Subscription();
 
   constructor(
     private fb: FormBuilder,
@@ -24,12 +29,21 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
+
   /**
    * login
    */
   public async login() {
-    const response  = await this.authService.login(this.email.value, this.password.value);
-    console.log(response);
+    this.subscriptions.add(this.authService.login(this.email.value, this.password.value)
+    .pipe(
+      catchError(error => of(false))
+    )
+    .subscribe(
+      result => this.handleSuccessfulLogin(result !== false)
+    ));
   }
 
   get email(): AbstractControl {
@@ -38,5 +52,10 @@ export class LoginComponent implements OnInit {
 
   get password(): AbstractControl {
     return this.loginForm.get('password');
+  }
+
+  private handleSuccessfulLogin(sucessful: boolean) {
+    this.authenticated = sucessful;
+    this.loginFailed = !sucessful;
   }
 }

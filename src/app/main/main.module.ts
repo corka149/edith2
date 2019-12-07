@@ -7,6 +7,7 @@ import { AppRoutingModule } from '../app-routing.module';
 import { TranslationsModule } from '../translations/translations.module';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { MaterialDesignModule } from '../material-design/material-design.module';
+import { AccountModule } from '../account/account.module';
 
 
 
@@ -18,7 +19,8 @@ import { MaterialDesignModule } from '../material-design/material-design.module'
     BrowserAnimationsModule,
     CommonModule,
     TranslationsModule,
-    MaterialDesignModule
+    MaterialDesignModule,
+    AccountModule
   ],
   exports: [
     MainComponent

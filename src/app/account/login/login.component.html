@@ -1,21 +1,31 @@
-<form [formGroup]="loginForm" (ngSubmit)="login()">
-    <div>
-        <mat-form-field style="width: 100%;">
-            <mat-label>{{ "E-Mail" | translate }}</mat-label>
-            <input matInput type="email" placeholder="{{ 'E-Mail' | translate }}" formControlName="email" required>
-            <mat-error *ngIf="email.errors && email.errors.required">{{ "E-Mail is required" | translate }}</mat-error>
-            <mat-error *ngIf="email.errors && email.errors.email">I{{ "Invalid E-Mail" | translate }}</mat-error>
-        </mat-form-field>
-    </div>
-    <div>
-        <mat-form-field style="width: 100%;">
-            <mat-label>{{ "Password" | translate }}</mat-label>
-            <input matInput type="password" placeholder="{{ 'Password' | translate }}" formControlName="password" required>
-            <mat-error *ngIf="password.errors && password.errors.required">{{ "Password is required" | translate }}</mat-error>
-        </mat-form-field>
-    </div>
-    <div style="display: flex;">
-        <span class="filler"></span>
-        <button [disabled]="loginForm.invalid" type="submit" mat-flat-button color="primary">{{ "Submit" | translate }}</button> 
-    </div>
-</form>
+<div *ngIf="loginFailed || !authenticated">
+    <h2>{{ "Sign in to your account" | translate:"account"}}</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <div>
+            <mat-form-field style="width: 100%;">
+                <mat-label>{{ "E-Mail" | translate:"account" }}</mat-label>
+                <input matInput type="email" placeholder="{{ 'E-Mail' | translate:'account' }}" formControlName="email" required>
+                <mat-error *ngIf="email.errors && email.errors.required">{{ "E-Mail is required" | translate:"account" }}</mat-error>
+                <mat-error *ngIf="email.errors && email.errors.email">I{{ "Invalid E-Mail" | translate:"account" }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field style="width: 100%;">
+                <mat-label>{{ "Password" | translate:"account" }}</mat-label>
+                <input matInput type="password" placeholder="{{ 'Password' | translate:'account' }}" formControlName="password" required>
+                <mat-error *ngIf="password.errors && password.errors.required">{{ "Password is required" | translate:"account" }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div style="display: flex;">
+            <span class="filler"></span>
+            <button [disabled]="loginForm.invalid" type="submit" mat-flat-button color="primary">{{ "Submit" | translate:"account" }}</button> 
+        </div>
+        <div style="display: flex;">
+            <span class="half-filler"></span>
+            <mat-error *ngIf="loginFailed">{{ "Authentication failed" | translate:"account" }}</mat-error>
+        </div>
+    </form>
+</div>
+<div *ngIf="!loginFailed && authenticated">
+    Welcome!
+</div>
