@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Validators, FormControl, FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
 import { AuthenticationService } from '../services/authentication.service';
-import { Subscription, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -23,7 +23,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private location: Location
   ) { }
 
   ngOnInit() {
@@ -38,11 +39,8 @@ export class LoginComponent implements OnInit, OnDestroy {
    */
   public async login() {
     this.subscriptions.add(this.authService.login(this.email.value, this.password.value)
-    .pipe(
-      catchError(error => of(false))
-    )
     .subscribe(
-      result => this.handleSuccessfulLogin(result !== false)
+      result => this.handleSuccessfulLogin(result)
     ));
   }
 
@@ -55,7 +53,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   private handleSuccessfulLogin(sucessful: boolean) {
-    this.authenticated = sucessful;
-    this.loginFailed = !sucessful;
+    if (sucessful) {
+      this.location.back();
+    } else {
+      this.authenticated = sucessful;
+      this.loginFailed = !sucessful;
+    }
   }
 }

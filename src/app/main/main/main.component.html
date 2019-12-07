@@ -11,9 +11,9 @@
     <a mat-button routerLink="signin" *ngIf="!authService.isAuthenticated">
       {{ "Sign in" | translate }}
     </a>
-    <a mat-button routerLink="" *ngIf="authService.isAuthenticated">
+    <button mat-button (click)="logout()" *ngIf="authService.isAuthenticated">
       {{ "Sign out" | translate }}
-    </a>
+    </button>
   </mat-toolbar>
 
   <mat-sidenav-container class="sidenav-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">

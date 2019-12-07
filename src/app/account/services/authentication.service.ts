@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { User } from '../models/user';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +18,28 @@ export class AuthenticationService {
   /**
    * login
    */
-  public login(email: string, password: string): Observable<string> {
-    return this.httpClient.post<string>('/jarvis/auth/signin', {email, password});
+  public login(email: string, password: string): Observable<boolean> {
+    return this.httpClient.post<string>('/jarvis/auth/signin', {email, password})
+      .pipe(
+        catchError(error => of(false)),
+        map(result => result !== false),
+        tap(result => this.authenticated = result)
+      );
+  }
+
+  /**
+   * return if the logout was successful
+   */
+  public logout(): Observable<boolean> {
+    return this.httpClient.get<string>('/jarvis/auth/signout')
+      .pipe(
+        map(resp => true),
+        catchError(resp => of(false)),
+        tap(resp => {
+          console.log(`Was logout successful: ${resp}`);
+          this.authenticated = resp;
+        })
+      );
   }
 
   public getUserDetails(): Observable<User> {
