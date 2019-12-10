@@ -6,11 +6,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TranslationsModule } from '../translations/translations.module';
 import { AuthenticationService } from './services/authentication.service';
 import { HttpClientModule } from '@angular/common/http';
+import { UserGroupService } from './services/user-group.service';
+import { UserGroupComponent } from './user-group/user-group.component';
 
 
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, UserGroupComponent],
   imports: [
     CommonModule,
     MaterialDesignModule,
@@ -19,7 +21,8 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule
   ],
   providers: [
-    AuthenticationService
+    AuthenticationService,
+    UserGroupService
   ]
 })
 export class AccountModule { }

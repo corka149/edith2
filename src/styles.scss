@@ -51,6 +51,18 @@ span.half-filler {
   padding: 1rem;
 }
 
+.button-row {
+  display: flex;
+}
+
+div.button-row {
+  display: flex;
+}
+
+div.button-row > button {
+  margin-left: 0.5rem;
+}
+
 @media (min-width: 1024px) {
   .main-container {
     margin-left: 33% !important;

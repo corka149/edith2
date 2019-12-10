@@ -1,6 +1,6 @@
 <div class="sidenav-container" [class.sidenav-is-mobile]="mobileQuery.matches">
   <mat-toolbar color="primary" class="sidenav-toolbar">
-    <button mat-icon-button (click)="snav.toggle()">
+    <button mat-icon-button (click)="snav.toggle()" *ngIf="authService.isAuthenticated">
       <mat-icon>menu</mat-icon>
     </button>
     <span class="half-filler"></span>
