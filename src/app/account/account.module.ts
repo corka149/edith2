@@ -7,12 +7,12 @@ import { TranslationsModule } from '../translations/translations.module';
 import { AuthenticationService } from './services/authentication.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UserGroupService } from './services/user-group.service';
-import { UserGroupComponent } from './user-group/user-group.component';
+import { UserGroupComponent, UserGroupDialogComponent } from './user-group/user-group.component';
 
 
 
 @NgModule({
-  declarations: [LoginComponent, UserGroupComponent],
+  declarations: [LoginComponent, UserGroupComponent, UserGroupDialogComponent],
   imports: [
     CommonModule,
     MaterialDesignModule,
@@ -23,6 +23,7 @@ import { UserGroupComponent } from './user-group/user-group.component';
   providers: [
     AuthenticationService,
     UserGroupService
-  ]
+  ],
+  entryComponents: [UserGroupDialogComponent]
 })
 export class AccountModule { }

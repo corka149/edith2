@@ -1,7 +1,7 @@
 <h2>{{ "Listing user groups" | translate:"account" }}</h2>
 <div class="button-row">
     <span class="filler"></span>
-    <button mat-raised-button color="primary">
+    <button mat-raised-button color="primary" (click)="openNewGroupDialog()">
         {{ "new user group" | translate:"account" }}
     </button>
     <button mat-raised-button color="primary">
@@ -10,15 +10,15 @@
 </div>
 
 <mat-list>
-    <mat-list-item>
+    <mat-list-item *ngIf="userGroups.length > 0">
         <h3>{{ "Name" | translate:"account" }}</h3>
     </mat-list-item>
     <mat-list-item *ngFor="let group of userGroups" style="padding: 1rem 0rem;">
         <span>{{ group.name }}</span>
         <span class="filler"></span>
-        <button mat-mini-fab color="primary"><mat-icon>zoom_in</mat-icon></button>
-        <button mat-mini-fab color="primary"><mat-icon>edit</mat-icon></button>
-        <button mat-mini-fab color="warn"><mat-icon>delete</mat-icon></button>
+        <!-- <button mat-mini-fab color="primary"><mat-icon>zoom_in</mat-icon></button> -->
+        <button mat-mini-fab color="primary" (click)="openEditGroupDialog(group)"><mat-icon>edit</mat-icon></button>
+        <button mat-mini-fab color="warn" (click)="deleteGroup(group)"><mat-icon>delete</mat-icon></button>
         <mat-divider></mat-divider>
     </mat-list-item>
 </mat-list>

@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>{{ "New user group" | translate:"account" }}</h1>
+<div mat-dialog-content>
+    <form [formGroup]="userGroupForm">
+        <mat-form-field style="width: 100%;">
+            <mat-label>{{ "Name" | translate:"account" }}</mat-label>
+            <input matInput type="text" formControlName="name" required
+                placeholder="{{ 'Name' | translate:'account' }}">
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">{{ "Cancel" | translate:"accounts" }}</button>
+  <button mat-button [mat-dialog-close]="userGroup" [disabled]="userGroupForm.invalid">{{ "Save" | translate:"accounts" }}</button>
+</div>

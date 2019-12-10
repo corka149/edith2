@@ -38,7 +38,14 @@ export class UserGroupService {
   /**
    * updateUserGroup
    */
-  public updateUserGroup(id: number, name: string): Observable<UserGroup> {
-    return this.httpClient.put<UserGroup>(UserGroupService.USER_GROUP + `/${id}`, { user_group: { name } });
+  public updateUserGroup(userGroup: UserGroup): Observable<UserGroup> {
+    return this.httpClient.put<UserGroup>(UserGroupService.USER_GROUP + `/${userGroup.id}`, { user_group: { name: userGroup.name } });
+  }
+
+  /**
+   * deleteUserGroup
+   */
+  public deleteUserGroup(userGroup: UserGroup): Observable<any> {
+    return this.httpClient.delete<any>(UserGroupService.USER_GROUP + `/${userGroup.id}`);
   }
 }
