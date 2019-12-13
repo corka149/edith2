@@ -30,6 +30,9 @@ export class UserGroupMembershipComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.invitationService.getMemberships().subscribe(
+      result => this.memberships = result
+    );
   }
 
   ngOnDestroy() {

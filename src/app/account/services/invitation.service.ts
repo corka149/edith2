@@ -41,7 +41,7 @@ export class InvitationService {
   /**
    * listMemberships
    */
-  public listMemberships(): Observable<Memberships> {
+  public getMemberships(): Observable<Memberships> {
     return this.httpClient.get<Memberships>(InvitationService.INVITATION);
   }
 }
