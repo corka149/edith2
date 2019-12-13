@@ -1,6 +1,6 @@
 <div class="sidenav-container" [class.sidenav-is-mobile]="mobileQuery.matches">
   <mat-toolbar color="primary" class="sidenav-toolbar">
-    <button mat-icon-button (click)="snav.toggle()" *ngIf="authService.isAuthenticated">
+    <button mat-icon-button (click)="snav.toggle()" *ngIf="authService.isAuthenticated && mobileQuery.matches">
       <mat-icon>menu</mat-icon>
     </button>
     <span class="half-filler"></span>
@@ -17,19 +17,33 @@
   </mat-toolbar>
 
   <mat-sidenav-container class="sidenav-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+    <mat-sidenav #snav [opened]="!mobileQuery.matches" 
+      [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
       fixedTopGap="56">
 
       <mat-nav-list>
-        <button mat-button [matMenuTriggerFor]="menu">
-          {{ "Shopping list" | translate}}
-          <mat-icon>arrow_drop_down</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <a routerLink="shoppinglists/current" mat-menu-item>{{ "Current" | translate }}</a>
-          <a routerLink="shoppinglists/all" mat-menu-item>{{ "All lists" | translate }}</a>
-        </mat-menu>
-        <a mat-list-item routerLink="usergroups">{{ "User groups" | translate}}</a>
+        <div>
+
+          <button mat-button [matMenuTriggerFor]="shoppingListMenu">
+            {{ "Shopping lists" | translate}}
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-menu #shoppingListMenu="matMenu">
+            <a routerLink="shoppinglists/current" mat-menu-item>{{ "Current" | translate }}</a>
+            <a routerLink="shoppinglists/all" mat-menu-item>{{ "All lists" | translate }}</a>
+          </mat-menu>
+        </div>
+
+        <div>
+          <button mat-button [matMenuTriggerFor]="userGroupMenu">
+            {{ "User groups" | translate}}
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-menu #userGroupMenu="matMenu">
+            <a mat-menu-item routerLink="usergroups/management">{{ "Management" | translate}}</a>
+            <a mat-menu-item routerLink="usergroups/membership">{{ "Membership" | translate}}</a>
+          </mat-menu>
+        </div>
       </mat-nav-list>
     </mat-sidenav>
 

@@ -8,11 +8,13 @@ import { AuthenticationService } from './services/authentication.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UserGroupService } from './services/user-group.service';
 import { UserGroupComponent, UserGroupDialogComponent } from './user-group/user-group.component';
+import { UserGroupMembershipComponent } from './user-group-membership/user-group-membership.component';
+import { InvitationService } from './services/invitation.service';
 
 
 
 @NgModule({
-  declarations: [LoginComponent, UserGroupComponent, UserGroupDialogComponent],
+  declarations: [LoginComponent, UserGroupComponent, UserGroupDialogComponent, UserGroupMembershipComponent],
   imports: [
     CommonModule,
     MaterialDesignModule,
@@ -22,7 +24,8 @@ import { UserGroupComponent, UserGroupDialogComponent } from './user-group/user-
   ],
   providers: [
     AuthenticationService,
-    UserGroupService
+    UserGroupService,
+    InvitationService
   ],
   entryComponents: [UserGroupDialogComponent]
 })

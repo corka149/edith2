@@ -48,4 +48,12 @@ export class UserGroupService {
   public deleteUserGroup(userGroup: UserGroup): Observable<any> {
     return this.httpClient.delete<any>(UserGroupService.USER_GROUP + `/${userGroup.id}`);
   }
+
+  /**
+   * leaveUserGroup
+   */
+  public leaveUserGroup(userGroup: UserGroup): Observable<any> {
+    return this.httpClient.delete<any>(UserGroupService.USER_GROUP + `/${userGroup.id}/leave`);
+  }
+
 }
