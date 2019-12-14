@@ -71,7 +71,7 @@ export class UserGroupMembershipComponent implements OnInit, OnDestroy {
 
   memberships: Memberships;
 
-  private subscribtions =  new Subscription();
+  private subscribtions = new Subscription();
 
   constructor(
     private invitationService: InvitationService,
@@ -124,13 +124,15 @@ export class UserGroupMembershipComponent implements OnInit, OnDestroy {
   }
 
   private createNewInvitation(invitation: Invitation) {
-    this.subscribtions.add(
-      this.invitationService.inviteUser(invitation).subscribe(
-        result => {
-          console.log('Try to created invitation:_result');
-          console.log(result);
-        }
-      )
-    );
+    if (invitation) {
+      this.subscribtions.add(
+        this.invitationService.inviteUser(invitation).subscribe(
+          result => {
+            console.log('Try to created invitation:_result');
+            console.log(result);
+          }
+        )
+      );
+    }
   }
 }
