@@ -20,7 +20,7 @@ export class InvitationService {
   public inviteUser(invitation: Invitation): Observable<any> {
     return this.httpClient.post(InvitationService.INVITATION,
       { invitation:
-        { invitee_name: invitation.inviteeEmail, usergroup_id: invitation.groupId }
+        { invitee_email: invitation.inviteeEmail, usergroup_id: invitation.groupId }
       });
   }
 
