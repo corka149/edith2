@@ -35,7 +35,7 @@ export class InvitationService {
    * acceptInvitation
    */
   public acceptInvitation(invitation: Invitation): Observable<any> {
-    return this.httpClient.get(InvitationService.INVITATION + `/${invitation.invited_into.id}/accept`);
+    return this.httpClient.get(InvitationService.INVITATION + `/${invitation.id}/accept`);
   }
 
   /**

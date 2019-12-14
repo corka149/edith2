@@ -101,6 +101,17 @@ export class UserGroupMembershipComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * acceptInvitation
+   */
+  public acceptInvitation(invitation: Invitation) {
+    this.subscribtions.add(
+      this.invitationService.acceptInvitation(invitation).subscribe(
+        result => this.reloadMemberships()
+      )
+    );
+  }
+
   public leaveGroup(group: UserGroup) {
     this.subscribtions.add(
       this.userGroupService.leaveUserGroup(group).subscribe(
