@@ -12,7 +12,7 @@
                 <!-- invited into -->
                 <ng-container matColumnDef="invitedInto">
                     <th mat-header-cell *matHeaderCellDef>{{ "Invited into" | translate:"account" }}</th>
-                    <td mat-cell *matCellDef="let invitation">{{ invitation.groupId }}</td>
+                    <td mat-cell *matCellDef="let invitation">{{ invitation.user_group_id }}</td>
                 </ng-container>
 
                 <!-- actions -->
@@ -38,13 +38,13 @@
                 <!-- host name -->
                 <ng-container matColumnDef="hostName">
                     <th mat-header-cell *matHeaderCellDef>{{ "Host name" | translate:"account" }}</th>
-                    <td mat-cell *matCellDef="let invitation">{{ invitation.inviteeName }}</td>
+                    <td mat-cell *matCellDef="let invitation">{{ invitation.host_name }}</td>
                 </ng-container>
 
                 <!-- invited into -->
                 <ng-container matColumnDef="invitedInto">
                     <th mat-header-cell *matHeaderCellDef>{{ "Invited into" | translate:"account" }}</th>
-                    <td mat-cell *matCellDef="let invitation">{{ invitation.groupId }}</td>
+                    <td mat-cell *matCellDef="let invitation">{{ invitation.user_group_id }}</td>
                 </ng-container>
 
                 <!-- actions -->
