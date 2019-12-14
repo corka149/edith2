@@ -28,7 +28,7 @@ export class InvitationService {
    * deleteInvitation
    */
   public deleteInvitation(invitation: Invitation): Observable<any> {
-    return this.httpClient.delete(InvitationService.INVITATION + `/${invitation.groupId}`);
+    return this.httpClient.delete(InvitationService.INVITATION + `/${invitation.id}`);
   }
 
   /**
