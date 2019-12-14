@@ -5,14 +5,14 @@
             <table mat-table [dataSource]="memberships.created_invitations">
                 <!-- invitee name -->
                 <ng-container matColumnDef="inviteeName">
-                    <th mat-header-cell *matHeaderCellDef>{{ "Invitee name" | translate:"account" }}</th>
+                    <th mat-header-cell *matHeaderCellDef>{{ "Invitee E-Mail" | translate:"account" }}</th>
                     <td mat-cell *matCellDef="let invitation">{{ invitation.invitee_email }}</td>
                 </ng-container>
 
                 <!-- invited into -->
                 <ng-container matColumnDef="invitedInto">
                     <th mat-header-cell *matHeaderCellDef>{{ "Invited into" | translate:"account" }}</th>
-                    <td mat-cell *matCellDef="let invitation">{{ invitation.user_group_id }}</td>
+                    <td mat-cell *matCellDef="let invitation">{{ invitation.invited_into.name }}</td>
                 </ng-container>
 
                 <!-- actions -->
@@ -44,7 +44,7 @@
                 <!-- invited into -->
                 <ng-container matColumnDef="invitedInto">
                     <th mat-header-cell *matHeaderCellDef>{{ "Invited into" | translate:"account" }}</th>
-                    <td mat-cell *matCellDef="let invitation">{{ invitation.user_group_id }}</td>
+                    <td mat-cell *matCellDef="let invitation">{{ invitation.invited_into.name }}</td>
                 </ng-container>
 
                 <!-- actions -->

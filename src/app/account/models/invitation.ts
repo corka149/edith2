@@ -1,12 +1,15 @@
 import { UserGroup } from './user-group';
+import { User } from './user';
 
 export class Invitation {
 
     constructor(
         public id: number,
-        public groupId: number,
         // tslint:disable-next-line: variable-name
-        private invitee_email: string,
+        public invited_into: UserGroup,
+        // tslint:disable-next-line: variable-name
+        public invitee_email: string,
+        public host: User,
     ) {}
 
     get inviteeEmail() {

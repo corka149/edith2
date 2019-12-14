@@ -50,11 +50,12 @@ export class UserGroupMembershipDialogComponent implements OnInit, OnDestroy {
   }
 
   get invitation(): Invitation {
-    return {
-      id: null,
-      inviteeEmail: this.inviteeEmail.value,
-      groupId: this.userGroupId.value
-    };
+    return new Invitation(
+      null,
+      new UserGroup(this.userGroupId.value, ''),
+      this.inviteeEmail.value,
+      null
+    );
   }
 }
 
@@ -92,7 +93,10 @@ export class UserGroupMembershipComponent implements OnInit, OnDestroy {
   public deleteInvitation(invitation: Invitation) {
     this.subscribtions.add(
       this.invitationService.deleteInvitation(invitation).subscribe(
-        result => console.log(`Deleted invitation: ${invitation.id}`)
+        result => {
+          console.log(`Deleted invitation: ${invitation.id}`);
+          this.reloadMemberships();
+        }
       )
     );
   }
@@ -100,7 +104,10 @@ export class UserGroupMembershipComponent implements OnInit, OnDestroy {
   public leaveGroup(group: UserGroup) {
     this.subscribtions.add(
       this.userGroupService.leaveUserGroup(group).subscribe(
-        result => console.log(`Left group: ${group.id}`)
+        result => {
+          console.log(`Left group: ${group.id}`);
+          this.reloadMemberships();
+        }
       )
     );
   }
@@ -130,9 +137,18 @@ export class UserGroupMembershipComponent implements OnInit, OnDestroy {
           result => {
             console.log('Try to created invitation:_result');
             console.log(result);
+            this.reloadMemberships();
           }
         )
       );
     }
+  }
+
+  private reloadMemberships() {
+    this.subscribtions.add(
+      this.invitationService.getMemberships().subscribe(
+        memberships => this.memberships = memberships
+      )
+    );
   }
 }
