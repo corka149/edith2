@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>{{ "New invitation" | translate:"account" }}</h1>
+<div mat-dialog-content>
+    <form [formGroup]="invitationForm">
+        <mat-form-field style="width: 100%;">
+            <mat-label>{{ "Invitee E-Mail" | translate:"account" }}</mat-label>
+            <input matInput type="email" formControlName="inviteeEmail" required
+                placeholder="{{ 'Invitee E-Mail' | translate:'account' }}">
+        </mat-form-field>
+
+        <mat-form-field style="width: 100%;">
+            <mat-label>{{ "Invite into" | translate: "account" }}</mat-label>
+            <mat-select [formControl]="userGroupId" required>
+                <mat-option *ngFor="let group of ownedGroups" [value]="group.id">
+                    {{ group.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">{{ "Cancel" | translate:"accounts" }}</button>
+  <button mat-button [mat-dialog-close]="invitation" [disabled]="invitationForm.invalid">{{ "Save" | translate:"accounts" }}</button>
+</div>

@@ -4,10 +4,14 @@ export class Invitation {
 
     constructor(
         public id: number,
-        public inviteeName: string,
         public groupId: number,
+        // tslint:disable-next-line: variable-name
+        private invitee_email: string,
     ) {}
 
+    get inviteeEmail() {
+        return this.invitee_email;
+    }
 }
 
 export class Memberships {

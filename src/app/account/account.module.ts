@@ -8,13 +8,19 @@ import { AuthenticationService } from './services/authentication.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UserGroupService } from './services/user-group.service';
 import { UserGroupComponent, UserGroupDialogComponent } from './user-group/user-group.component';
-import { UserGroupMembershipComponent } from './user-group-membership/user-group-membership.component';
+import { UserGroupMembershipComponent, UserGroupMembershipDialogComponent } from './user-group-membership/user-group-membership.component';
 import { InvitationService } from './services/invitation.service';
 
 
 
 @NgModule({
-  declarations: [LoginComponent, UserGroupComponent, UserGroupDialogComponent, UserGroupMembershipComponent],
+  declarations: [
+    LoginComponent,
+    UserGroupComponent,
+    UserGroupDialogComponent,
+    UserGroupMembershipComponent,
+    UserGroupMembershipDialogComponent
+  ],
   imports: [
     CommonModule,
     MaterialDesignModule,
@@ -27,6 +33,10 @@ import { InvitationService } from './services/invitation.service';
     UserGroupService,
     InvitationService
   ],
-  entryComponents: [UserGroupDialogComponent]
+  entryComponents: [
+    UserGroupDialogComponent,
+    UserGroupDialogComponent,
+    UserGroupMembershipDialogComponent
+  ]
 })
 export class AccountModule { }
