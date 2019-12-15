@@ -36,9 +36,9 @@
                 <ng-container matColumnDef="action">
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let list">
-                        <button mat-mini-fab color="primary">
+                        <a mat-mini-fab color="primary" [routerLink]="['/shoppinglists', list.id, 'items']">
                             <mat-icon>shopping_cart</mat-icon>
-                        </button>
+                        </a>
                         <button mat-mini-fab color="primary" (click)="openEditListDialog(list)">
                             <mat-icon>edit</mat-icon>
                         </button>
@@ -75,9 +75,9 @@
                 <ng-container matColumnDef="action">
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let list">
-                        <button mat-mini-fab color="primary">
+                        <a mat-mini-fab color="primary" [routerLink]="['/shoppinglists', list.id, 'items']">
                             <mat-icon>shopping_cart</mat-icon>
-                        </button>
+                        </a>
                         <button mat-mini-fab color="primary" (click)="openEditListDialog(list)">
                             <mat-icon>edit</mat-icon>
                         </button>

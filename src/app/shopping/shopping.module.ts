@@ -5,15 +5,19 @@ import { MaterialDesignModule } from '../material-design/material-design.module'
 import { TranslationsModule } from '../translations/translations.module';
 import { ShoppingListService } from './services/shopping-list.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ItemsComponent } from './items/items.component';
+import { AppRoutingModule } from '../app-routing.module';
 
 
 
 @NgModule({
   declarations: [
     ShoppingListOverviewComponent,
-    ShoppingListDialogComponent
+    ShoppingListDialogComponent,
+    ItemsComponent
   ],
   imports: [
+    AppRoutingModule,
     CommonModule,
     MaterialDesignModule,
     ReactiveFormsModule,

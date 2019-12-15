@@ -1,6 +1,6 @@
 <section>
-    <h3 *ngIf="name.length === 0">{{ "Welcome to jARVIS!" | translate:"main" }}</h3>
-    <h3 *ngIf="name.length >= 0">{{ "Welcome" | translate:"main" }} {{ name }}</h3>
+    <h1 *ngIf="name.length === 0">{{ "Welcome to jARVIS!" | translate:"main" }}</h1>
+    <h1 *ngIf="name.length >= 0">{{ "Welcome" | translate:"main" }} {{ name }}</h1>
 
     <p>{{ "How can I help you?" | translate:"main" }}</p>
     <img class="responsive-image" src="assets/img/jarvis.png" alt="jARVIS avatar" />
