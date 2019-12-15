@@ -3,6 +3,67 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ShoppingListService } from '../services/shopping-list.service';
 import { ShoppingList } from '../models/shopping-list';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
+import { UserGroup } from 'src/app/account/models/user-group';
+import { UserGroupService } from 'src/app/account/services/user-group.service';
+import { UserGroupMembershipDialogComponent } from 'src/app/account/user-group-membership/user-group-membership.component';
+
+@Component({
+  selector: 'app-shopping-list-dialog',
+  templateUrl: 'shopping-list-dialog.component.html'
+})
+export class ShoppingListDialogComponent implements OnInit, OnDestroy {
+  shoppingListForm: FormGroup = this.fb.group({
+    done: ['', []],
+    plannedFor: ['', [Validators.required]],
+    belongsTo: ['', [Validators.required]],
+  });
+  groups: UserGroup[] = [];
+
+  private subscribtions = new Subscription();
+
+  constructor(
+    private fb: FormBuilder,
+    private userGroupService: UserGroupService,
+    public dialogRef: MatDialogRef<UserGroupMembershipDialogComponent>) { }
+
+  cancel(): void {
+    this.dialogRef.close();
+  }
+
+  ngOnInit() {
+    this.subscribtions.add(
+      this.userGroupService.getUserGroups().subscribe(
+        result => this.groups = result
+      )
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscribtions.unsubscribe();
+  }
+
+  get done(): AbstractControl {
+    return this.shoppingListForm.get('done');
+  }
+
+  get plannedFor(): AbstractControl {
+    return this.shoppingListForm.get('plannedFor');
+  }
+
+  get belongsTo(): AbstractControl {
+    return this.shoppingListForm.get('belongsTo');
+  }
+
+  get shoppingList(): ShoppingList {
+    return new ShoppingList(
+      this.done.value,
+      this.plannedFor.value,
+      this.belongsTo.value
+    );
+  }
+}
 
 class Tab {
   static ALL: Tab = { name: 'all', index: 0 };
@@ -38,6 +99,7 @@ export class ShoppingListOverviewComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private shoppingListService: ShoppingListService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -48,7 +110,22 @@ export class ShoppingListOverviewComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+  /**
+   * openNewMembershipDialog
+   */
   public openNewListDialog() {
+    const dialogRef = this.dialog.open(
+      ShoppingListDialogComponent,
+      {
+        width: '50rem'
+      }
+    );
+
+    this.subscribtions.add(
+      dialogRef.afterClosed().subscribe(
+        result => console.log(result)
+      )
+    );
   }
 
   private currentTabByUrl(url: string): Tab {

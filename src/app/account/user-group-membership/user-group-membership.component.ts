@@ -8,7 +8,7 @@ import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/fo
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-user-group-dialog',
+  selector: 'app-user-group-membership-dialog',
   templateUrl: 'user-group-membership-dialog.html'
 })
 export class UserGroupMembershipDialogComponent implements OnInit, OnDestroy {
