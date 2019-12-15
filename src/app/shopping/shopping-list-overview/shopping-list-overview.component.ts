@@ -58,7 +58,7 @@ export class ShoppingListDialogComponent implements OnInit, OnDestroy {
 
   get shoppingList(): ShoppingList {
     return new ShoppingList(
-      this.done.value,
+      !!this.done.value,
       this.plannedFor.value,
       this.belongsTo.value
     );
@@ -83,15 +83,10 @@ class Tab {
 export class ShoppingListOverviewComponent implements OnInit, OnDestroy {
 
   currentTab = Tab.ALL;
-  allShoppingLists: ShoppingList[] = [
-    {id: 1, done: false, planned_for: 'today', belongs_to: {id: 1, name: 'Ziemann'}, creator: {name: 'Bob'}},
-    {id: 1, done: true, planned_for: 'today', belongs_to: {id: 1, name: 'Ziemann'}, creator: {name: 'Bob'}}
-  ];
+  allShoppingLists: ShoppingList[] = [ ];
   displayedColumnsAllShoppingLists = ['done', 'plannedFor', 'belongsTo', 'action'];
 
-  openShoppingLists: ShoppingList[] = [
-    {id: 1, done: false, planned_for: 'today', belongs_to: {id: 1, name: 'Ziemann'}, creator: {name: 'Bob'}}
-  ];
+  openShoppingLists: ShoppingList[] = [ ];
   displayedColumnsCurrentShoppingLists = ['plannedFor', 'belongsTo', 'action'];
 
   private subscribtions = new Subscription();
@@ -123,7 +118,18 @@ export class ShoppingListOverviewComponent implements OnInit, OnDestroy {
 
     this.subscribtions.add(
       dialogRef.afterClosed().subscribe(
-        result => console.log(result)
+        result => this.createShoppingList(result)
+      )
+    );
+  }
+
+  /**
+   * deleteShoppingList
+   */
+  public deleteShoppingList(shoppingList: ShoppingList) {
+    this.subscribtions.add(
+      this.shoppingListService.deleteShoppingLists(shoppingList).subscribe(
+        result => this.loadAllLists()
       )
     );
   }
@@ -138,11 +144,21 @@ export class ShoppingListOverviewComponent implements OnInit, OnDestroy {
   private loadAllLists() {
     this.subscribtions.add(
       this.shoppingListService.getShoppingLists().subscribe(
-        lists => this.allShoppingLists
+        lists => this.allShoppingLists = lists
       )
     );
     this.subscribtions.add(this.shoppingListService.getOpenShoppingLists().subscribe(
-      openLists => this.openShoppingLists
+      openLists => this.openShoppingLists = openLists
     ));
+  }
+
+  private createShoppingList(shoppingList: ShoppingList) {
+    if (shoppingList) {
+      this.subscribtions.add(
+        this.shoppingListService.createShoppingList(shoppingList).subscribe(
+          result => this.loadAllLists()
+        )
+      );
+    }
   }
 }

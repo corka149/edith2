@@ -29,7 +29,7 @@
                 <!-- Belongs to -->
                 <ng-container matColumnDef="belongsTo">
                     <th mat-header-cell *matHeaderCellDef>{{ "Belongs to" | translate:"shopping" }}</th>
-                    <td mat-cell *matCellDef="let list">{{ list.belongs_to.name }}</td>
+                    <td mat-cell *matCellDef="let list">{{ list.belongs_to_group.name }}</td>
                 </ng-container>
 
                 <!-- actions -->
@@ -42,7 +42,7 @@
                         <button mat-mini-fab color="primary">
                             <mat-icon>edit</mat-icon>
                         </button>
-                        <button mat-mini-fab color="warn">
+                        <button mat-mini-fab color="warn" (click)="deleteShoppingList(list)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </td>
@@ -68,7 +68,7 @@
                 <!-- Belongs to -->
                 <ng-container matColumnDef="belongsTo">
                     <th mat-header-cell *matHeaderCellDef>{{ "Belongs to" | translate:"shopping" }}</th>
-                    <td mat-cell *matCellDef="let list">{{ list.belongs_to.name }}</td>
+                    <td mat-cell *matCellDef="let list">{{ list.belongs_to_group.name }}</td>
                 </ng-container>
 
                 <!-- actions -->
@@ -81,7 +81,7 @@
                         <button mat-mini-fab color="primary">
                             <mat-icon>edit</mat-icon>
                         </button>
-                        <button mat-mini-fab color="warn">
+                        <button mat-mini-fab color="warn" (click)="deleteShoppingList(list)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </td>

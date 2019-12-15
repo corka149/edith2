@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ShoppingList } from '../models/shopping-list';
 import { Observable } from 'rxjs';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,8 @@ export class ShoppingListService {
   }
 
   public createShoppingList(shoppingList: ShoppingList): Observable<any> {
+    // Dirty hack: Server saves only date - no time zone
+    shoppingList.planned_for = moment(shoppingList.planned_for).add(1, 'h').toISOString();
     return this.http.post(ShoppingListService.SHOPPING_LIST, {shopping_list: shoppingList});
   }
 
