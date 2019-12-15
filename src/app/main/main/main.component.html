@@ -19,9 +19,9 @@
   <mat-sidenav-container class="sidenav-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
     <mat-sidenav #snav [opened]="!mobileQuery.matches" 
       [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
-      fixedTopGap="56" *ngIf="authService.isAuthenticated">
+      fixedTopGap="56">
 
-      <mat-nav-list>
+      <mat-nav-list *ngIf="authService.isAuthenticated">
         <div>
 
           <button mat-button [matMenuTriggerFor]="shoppingListMenu">
@@ -45,6 +45,10 @@
           </mat-menu>
         </div>
       </mat-nav-list>
+
+      <p *ngIf="!authService.isAuthenticated" style="margin: 1rem;">
+        {{ "Please sign in" | translate }}
+      </p>
     </mat-sidenav>
 
     <mat-sidenav-content class="main-container">

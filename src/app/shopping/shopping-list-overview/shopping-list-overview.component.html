@@ -1,0 +1,95 @@
+<h2>{{ "Shopping lists" | translate:"shopping" }}</h2>
+<div class="button-row">
+    <span class="filler"></span>
+    <button mat-raised-button color="primary" (click)="openNewListDialog()">
+        {{ "new shopping list" | translate:"shopping" }}
+    </button>
+</div>
+
+<mat-tab-group [selectedIndex]="currentTab.index">
+    <!-- ALL -->
+    <mat-tab label="{{ 'All' | translate:'shopping'}}">
+        <div *ngIf="allShoppingLists && allShoppingLists.length">
+            <table mat-table [dataSource]="allShoppingLists">
+                <!-- Done -->
+                <ng-container matColumnDef="done">
+                    <th mat-header-cell *matHeaderCellDef>{{ "Done" | translate:"shopping" }}</th>
+                    <td mat-cell *matCellDef="let list">
+                        <mat-icon *ngIf="list.done">done</mat-icon>
+                        <mat-icon *ngIf="!list.done">close</mat-icon>
+                    </td>
+                </ng-container>
+
+                <!-- Planned for -->
+                <ng-container matColumnDef="plannedFor">
+                    <th mat-header-cell *matHeaderCellDef>{{ "Planned for" | translate:"shopping" }}</th>
+                    <td mat-cell *matCellDef="let list">{{ list.planned_for }}</td>
+                </ng-container>
+
+                <!-- Belongs to -->
+                <ng-container matColumnDef="belongsTo">
+                    <th mat-header-cell *matHeaderCellDef>{{ "Belongs to" | translate:"shopping" }}</th>
+                    <td mat-cell *matCellDef="let list">{{ list.belongs_to.name }}</td>
+                </ng-container>
+
+                <!-- actions -->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let list">
+                        <button mat-mini-fab color="primary">
+                            <mat-icon>shopping_cart</mat-icon>
+                        </button>
+                        <button mat-mini-fab color="primary">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-mini-fab color="warn">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsAllShoppingLists"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsAllShoppingLists;"></tr>
+            </table>
+        </div>
+    </mat-tab>
+
+    <!-- CURRENT -->
+    <mat-tab label="{{ 'Current' | translate:'shopping'}}">
+        <div *ngIf="openShoppingLists && openShoppingLists.length">
+            <table mat-table [dataSource]="openShoppingLists">
+
+                <!-- Planned for -->
+                <ng-container matColumnDef="plannedFor">
+                    <th mat-header-cell *matHeaderCellDef>{{ "Planned for" | translate:"shopping" }}</th>
+                    <td mat-cell *matCellDef="let list">{{ list.planned_for }}</td>
+                </ng-container>
+
+                <!-- Belongs to -->
+                <ng-container matColumnDef="belongsTo">
+                    <th mat-header-cell *matHeaderCellDef>{{ "Belongs to" | translate:"shopping" }}</th>
+                    <td mat-cell *matCellDef="let list">{{ list.belongs_to.name }}</td>
+                </ng-container>
+
+                <!-- actions -->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let list">
+                        <button mat-mini-fab color="primary">
+                            <mat-icon>shopping_cart</mat-icon>
+                        </button>
+                        <button mat-mini-fab color="primary">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-mini-fab color="warn">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsCurrentShoppingLists"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsCurrentShoppingLists;"></tr>
+            </table>
+        </div>
+    </mat-tab>
+</mat-tab-group>

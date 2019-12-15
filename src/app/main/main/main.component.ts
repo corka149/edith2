@@ -41,8 +41,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this.subscribtions.add(this.authService.logout().subscribe(
       successful => {
         if (successful) {
-          this.router.navigateByUrl('/');
-        }
+          window.location.replace('/');        }
       }
     ));
   }

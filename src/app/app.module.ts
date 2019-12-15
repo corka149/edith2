@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { MainModule } from './main/main.module';
 import { AccountModule } from './account/account.module';
+import { ShoppingModule } from './shopping/shopping.module';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { AccountModule } from './account/account.module';
   imports: [
     BrowserModule,
     MainModule,
-    AccountModule
+    AccountModule,
+    ShoppingModule
   ],
   providers: [
   ],
