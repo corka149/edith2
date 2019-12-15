@@ -1,6 +1,5 @@
 import { User } from 'src/app/account/models/user';
 import { UserGroup } from 'src/app/account/models/user-group';
-import { UserGroupComponent } from 'src/app/account/user-group/user-group.component';
 
 export class ShoppingList {
 
@@ -13,7 +12,7 @@ export class ShoppingList {
         // tslint:disable-next-line: variable-name
         public belongs_to: number,
         // tslint:disable-next-line: variable-name
-        public belongs_to_group?: UserGroupComponent,
+        public belongs_to_group?: UserGroup,
         public id?: number,
         public creator?: User,
     ) { }

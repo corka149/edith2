@@ -1,13 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ShoppingListService } from '../services/shopping-list.service';
 import { ShoppingList } from '../models/shopping-list';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { UserGroup } from 'src/app/account/models/user-group';
 import { UserGroupService } from 'src/app/account/services/user-group.service';
 import { UserGroupMembershipDialogComponent } from 'src/app/account/user-group-membership/user-group-membership.component';
+import { DateUtils } from 'src/app/utils/date-utils';
 
 @Component({
   selector: 'app-shopping-list-dialog',
@@ -26,7 +27,14 @@ export class ShoppingListDialogComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private userGroupService: UserGroupService,
-    public dialogRef: MatDialogRef<UserGroupMembershipDialogComponent>) { }
+    @Inject(MAT_DIALOG_DATA) public existingList: ShoppingList,
+    public dialogRef: MatDialogRef<UserGroupMembershipDialogComponent>) {
+      if (existingList) {
+        this.done.setValue(existingList.done);
+        this.plannedFor.setValue(DateUtils.fromIso8601ToDate(existingList.planned_for));
+        this.belongsTo.setValue(existingList.belongs_to_group.id);
+      }
+    }
 
   cancel(): void {
     this.dialogRef.close();
@@ -57,11 +65,17 @@ export class ShoppingListDialogComponent implements OnInit, OnDestroy {
   }
 
   get shoppingList(): ShoppingList {
-    return new ShoppingList(
+    const shoppingList = new ShoppingList(
       !!this.done.value,
       this.plannedFor.value,
       this.belongsTo.value
     );
+
+    if (this.existingList && this.existingList.id) {
+      shoppingList.id = this.existingList.id;
+    }
+
+    return shoppingList;
   }
 }
 
@@ -124,6 +138,25 @@ export class ShoppingListOverviewComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * openNewMembershipDialog
+   */
+  public openEditListDialog(shoppingList: ShoppingList) {
+    const dialogRef = this.dialog.open(
+      ShoppingListDialogComponent,
+      {
+        width: '50rem',
+        data: shoppingList
+      }
+    );
+
+    this.subscribtions.add(
+      dialogRef.afterClosed().subscribe(
+        result => this.updateShoppingList(result)
+      )
+    );
+  }
+
+  /**
    * deleteShoppingList
    */
   public deleteShoppingList(shoppingList: ShoppingList) {
@@ -156,6 +189,16 @@ export class ShoppingListOverviewComponent implements OnInit, OnDestroy {
     if (shoppingList) {
       this.subscribtions.add(
         this.shoppingListService.createShoppingList(shoppingList).subscribe(
+          result => this.loadAllLists()
+        )
+      );
+    }
+  }
+
+  private updateShoppingList(shoppingList: ShoppingList) {
+    if (shoppingList) {
+      this.subscribtions.add(
+        this.shoppingListService.updateShoppingList(shoppingList).subscribe(
           result => this.loadAllLists()
         )
       );

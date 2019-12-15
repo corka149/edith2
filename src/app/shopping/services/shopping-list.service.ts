@@ -35,6 +35,8 @@ export class ShoppingListService {
   }
 
   public updateShoppingList(shoppingList: ShoppingList): Observable<any> {
+    // Dirty hack: Server saves only date - no time zone
+    shoppingList.planned_for = moment(shoppingList.planned_for).add(1, 'h').toISOString();
     return this.http.put(ShoppingListService.SHOPPING_LIST + `/${shoppingList.id}`, {shopping_list: shoppingList});
   }
 

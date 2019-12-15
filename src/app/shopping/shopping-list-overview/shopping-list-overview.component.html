@@ -39,7 +39,7 @@
                         <button mat-mini-fab color="primary">
                             <mat-icon>shopping_cart</mat-icon>
                         </button>
-                        <button mat-mini-fab color="primary">
+                        <button mat-mini-fab color="primary" (click)="openEditListDialog(list)">
                             <mat-icon>edit</mat-icon>
                         </button>
                         <button mat-mini-fab color="warn" (click)="deleteShoppingList(list)">
@@ -78,7 +78,7 @@
                         <button mat-mini-fab color="primary">
                             <mat-icon>shopping_cart</mat-icon>
                         </button>
-                        <button mat-mini-fab color="primary">
+                        <button mat-mini-fab color="primary" (click)="openEditListDialog(list)">
                             <mat-icon>edit</mat-icon>
                         </button>
                         <button mat-mini-fab color="warn" (click)="deleteShoppingList(list)">
