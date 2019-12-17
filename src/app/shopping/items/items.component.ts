@@ -78,7 +78,7 @@ export class ItemsComponent implements OnInit {
   }
 
   public createOrUpdateItem(item: Item) {
-    if (this.activeItem && this.activeItem.id) {
+    if (item && item.id) {
       this.subscriptions.add(
         this.itemService.updateItem(this.shoppingList.id, item).subscribe(
           result => this.loadItems(this.shoppingList.id)

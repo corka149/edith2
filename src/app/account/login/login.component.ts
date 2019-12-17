@@ -3,6 +3,7 @@ import { Validators, FormControl, FormBuilder, FormGroup, AbstractControl } from
 import { AuthenticationService } from '../services/authentication.service';
 import { Subscription } from 'rxjs';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private authService: AuthenticationService,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -37,11 +39,22 @@ export class LoginComponent implements OnInit, OnDestroy {
   /**
    * login
    */
-  public async login() {
+  public login() {
     this.subscriptions.add(this.authService.login(this.email.value, this.password.value)
     .subscribe(
       result => this.handleSuccessfulLogin(result)
     ));
+  }
+
+  /**
+   * loginGithub
+   */
+  public loginGithub() {
+    setTimeout(
+      () => this.probeAuthentication(),
+      2_500
+    );
+    window.location.replace('/jarvis/auth/github');
   }
 
   get email(): AbstractControl {
@@ -59,5 +72,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.authenticated = sucessful;
       this.loginFailed = !sucessful;
     }
+  }
+
+  private async probeAuthentication() {
+    console.log('Probe authentication');
+    this.router.navigateByUrl('/');
   }
 }
