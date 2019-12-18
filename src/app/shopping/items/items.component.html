@@ -1,4 +1,10 @@
 <h2>{{ "Items of shopping list planned for" | translate: "shopping" }}</h2>
+<div class="button-row">
+    <span class="filler"></span>
+    <button mat-mini-fab color="primary" (click)="back()">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+</div>
 
 <!-- ITEM EDITOR -->
 <div>
@@ -8,7 +14,7 @@
             <input matInput type="text" placeholder="{{ 'Item name' | translate:'shopping' }}" formControlName="name"
                 required>
             <mat-error *ngIf="name.errors && name.errors.required && itemForm.touched">
-                {{ "Description is required" | translate:"shopping" }}</mat-error>
+                {{ "Item name is required" | translate:"shopping" }}</mat-error>
         </mat-form-field>
 
         <mat-form-field style="width: 100%;">

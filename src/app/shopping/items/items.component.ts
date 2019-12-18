@@ -6,6 +6,7 @@ import { Item } from '../models/item';
 import { ShoppingListService } from '../services/shopping-list.service';
 import { ItemService } from '../services/item.service';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-items',
@@ -30,6 +31,7 @@ export class ItemsComponent implements OnInit {
     private shoppingListService: ShoppingListService,
     private itemService: ItemService,
     private fb: FormBuilder,
+    private location: Location,
   ) { }
 
   ngOnInit() {
@@ -75,6 +77,13 @@ export class ItemsComponent implements OnInit {
         result => this.loadItems(this.shoppingList.id)
       )
     );
+  }
+
+  /**
+   * back
+   */
+  public back() {
+    this.location.back();
   }
 
   public createOrUpdateItem(item: Item) {
