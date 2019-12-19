@@ -46,6 +46,70 @@ export class Translations {
             'Sign in to your account': {
                 de: 'Meld dich in deinem Account an',
                 en: 'Sign in to your account'
+            },
+            'User groups': {
+                de: 'Benutzergruppen',
+                en: 'User groups'
+            },
+            'new user group': {
+                de: 'Neue Benutzergruppe',
+                en: 'new user group'
+            },
+            'Name': {
+                de: 'Name',
+                en: 'Name'
+            },
+            'Save': {
+                de: 'Speichern',
+                en: 'Save'
+            },
+            'Cancel': {
+                de: 'Abbruch',
+                en: 'Cancel'
+            },
+            'New user group': {
+                de: 'Neue Benutzergruppe',
+                en: 'New user group'
+            },
+            'Are you sure?': {
+                de: 'Bist du dir sicher?',
+                en: 'Are you sure?'
+            },
+            'New invitation': {
+                de: 'Neue Einladung',
+                en: 'New invitation'
+            },
+            'Received invitations': {
+                de: 'Erhaltene Einladung',
+                en: 'Received invitations'
+            },
+            'Group memberships': {
+                de: 'Gruppenmitgliedschaft',
+                en: 'Group memberships'
+            },
+            'Invitee E-Mail': {
+                de: 'E-Mail des Einzuladenen',
+                en: 'Invitee E-Mail'
+            },
+            'Invite into': {
+                de: 'Einladen in',
+                en: 'Invite into'
+            },
+            'Created invitations': {
+                de: 'Erstellte Einladungen',
+                en: 'Created invitations'
+            },
+            'Invited into': {
+                de: 'Eingeladen in',
+                en: 'Invited into'
+            },
+            'Host name': {
+                de: 'Name des Einladenen',
+                en: 'Host name'
+            },
+            'Member of': {
+                de: 'Mitglied von',
+                en: 'Member of'
             }
         },
         shopping: {
@@ -152,11 +216,10 @@ export class Translations {
      * @param key to be look up
      */
     public static find(language: string, key: string): string {
-        const translatedText = Translations.TRANSLATIONS[key]
-            && Translations.TRANSLATIONS[key][language]
+        const translatedText = Translations.containsKey(key, language)
             ? Translations.TRANSLATIONS[key][language] : key;
 
-        if (translatedText === key && translatedText !== 'E-Mail') {
+        if (!Translations.containsKey(key, language)) {
             console.log(`NOT FOUND: language="${language}", key="${key}"`);
         }
 
@@ -170,16 +233,24 @@ export class Translations {
      * @param key to be look up
      */
     public static findByDomain(domain: string, language: string, key: string): string {
-        const translatedText = Translations.DOMAN_TRANSLATIONS[domain]
-            && Translations.DOMAN_TRANSLATIONS[domain][key]
-            && Translations.DOMAN_TRANSLATIONS[domain][key][language]
+        const translatedText = Translations.containsDomainKey(domain, key, language)
             ? Translations.DOMAN_TRANSLATIONS[domain][key][language] : key;
 
-        if (translatedText === key && translatedText !== 'E-Mail') {
+        if (!Translations.containsDomainKey(domain, key, language)) {
             console.log(`NOT FOUND: domain="${domain}", key="${key}", language="${language}"`);
         }
 
         return translatedText;
     }
 
+    private static containsKey(key: string, language: string): boolean {
+        return Translations.TRANSLATIONS[key]
+        && Translations.TRANSLATIONS[key][language];
+    }
+
+    private static containsDomainKey(domain: string, key: string, language: string): boolean {
+        return Translations.DOMAN_TRANSLATIONS[domain]
+        && Translations.DOMAN_TRANSLATIONS[domain][key]
+        && Translations.DOMAN_TRANSLATIONS[domain][key][language];
+    }
 }
