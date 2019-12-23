@@ -18,3 +18,5 @@ FROM nginx:1.17.6-alpine
 COPY --from=node /usr/src/app/dist/edith2 /usr/share/nginx/html
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
