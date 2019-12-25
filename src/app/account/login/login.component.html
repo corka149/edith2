@@ -35,8 +35,11 @@
     <!-- GITHUB -->
     <div style="display: flex;">
         <span class="half-filler"></span>
-        <button mat-button (click)="loginGithub()" type="button">
-            {{ "Or sign in by" | translate:"account" }} <img src="assets/img/GitHub-Mark-32px.png" alt="Github">
-        </button>
+        <button mat-button (click)="loginGithub()" type="button" disabled>
+            {{ "Or sign in by" | translate:"account" }} 
+            <img style="opacity: 0.2;" src="assets/img/GitHub-Mark-32px.png" alt="Github">
+
+        <!-- Insufficient support for reverse proxy in Ueberauth -->
+        </button><span style="font-size: small; opacity: 0.3; padding-top: 0.6rem;">(Comming back soon)</span>
     </div>
 </form>
