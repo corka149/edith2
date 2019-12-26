@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>{{ "Shopping list" | translate:"shopping" }}</h1>
-<div mat-dialog-content>
+<div>
     <form [formGroup]="shoppingListForm">
         <!-- DONE -->
         <p>
@@ -22,10 +22,12 @@
                     {{ group.name }}
                 </mat-option>
             </mat-select>
+        <mat-hint>{{ "You have to choose a group to which the shoppinglist belongs. Only the creator and members of this
+            group can see this list." | translate: "shopping" }}</mat-hint>
         </mat-form-field>
     </form>
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions style="padding-top: 2rem;">
     <button mat-button (click)="cancel()">{{ "Cancel" | translate:"shopping" }}</button>
     <button mat-button [mat-dialog-close]="shoppingList"
         [disabled]="shoppingListForm.invalid">{{ "Save" | translate:"shopping" }}</button>

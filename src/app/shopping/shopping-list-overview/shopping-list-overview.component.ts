@@ -126,7 +126,8 @@ export class ShoppingListOverviewComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(
       ShoppingListDialogComponent,
       {
-        width: '50rem'
+        width: '50rem',
+        maxHeight: '90vh'
       }
     );
 

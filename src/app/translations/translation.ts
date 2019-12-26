@@ -167,7 +167,9 @@ export class Translations {
             }, 'Amound is required': {
                 de: 'Menge ist erforderlich',
                 en: 'Amound is required'
-            },
+            }, 'You have to choose a group to which the shoppinglist belongs. Only the creator and members of this group can see this list.': {
+                de: 'Du musst eine Grupe auswählen zu der die Liste gehört. Nur der Ersteller und Mitglieder der Gruppe können die Liste sehen.'
+            }
         }
     };
 
