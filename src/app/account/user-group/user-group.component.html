@@ -1,4 +1,14 @@
-<h2>{{ "User groups" | translate:"account" }}</h2>
+<h2>
+    {{ "User groups" | translate:"account" }}
+</h2>
+
+<p>
+    <mat-hint style="font-size: small;">
+        {{"Users can be assigned to groups to give them access to certain things like shopping lists." | translate: "account"}}
+        {{"A creator of a group can invited others via the membership function." | translate: "account"}}
+    </mat-hint>
+</p>
+
 <div class="button-row">
     <span class="filler"></span>
     <button mat-raised-button color="primary" (click)="openNewGroupDialog()">
@@ -14,8 +24,12 @@
         <span>{{ group.name }}</span>
         <span class="filler"></span>
         <!-- <button mat-mini-fab color="primary"><mat-icon>zoom_in</mat-icon></button> -->
-        <button mat-mini-fab color="primary" (click)="openEditGroupDialog(group)"><mat-icon>edit</mat-icon></button>
-        <button mat-mini-fab color="warn" (click)="deleteGroup(group)"><mat-icon>delete</mat-icon></button>
+        <button mat-mini-fab color="primary" (click)="openEditGroupDialog(group)">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-mini-fab color="warn" (click)="deleteGroup(group)">
+            <mat-icon>delete</mat-icon>
+        </button>
         <mat-divider></mat-divider>
     </mat-list-item>
 </mat-list>

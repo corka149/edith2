@@ -110,6 +110,14 @@ export class Translations {
             'Member of': {
                 de: 'Mitglied von',
                 en: 'Member of'
+            }, 'Users can gain access to groups through invitations.': {
+                de: 'Benutzer bekommen Zugang zu Gruppen durch Einladungen.'
+            }, 'Group membership': {
+                de: 'Gruppenmitgliedschaft'
+            }, 'A creator of a group can invited others via the membership function.': {
+                de: 'Ein Gruppenersteller kann Nutzer in seine Gruppe einladen mittels der Mitgliedschaftsfunktion.'
+            }, 'Users can be assigned to groups to give them access to certain things like shopping lists.': {
+                de: 'Benutzer können Gruppen zugewiesen werden. Dadurch bekommen sie Zugang zu Dingen, die der Gruppe gehörten, wie Einkaufslisten.'
             }
         },
         shopping: {
