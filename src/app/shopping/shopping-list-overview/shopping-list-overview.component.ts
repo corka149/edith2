@@ -119,6 +119,10 @@ export class ShoppingListOverviewComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
+  refresh(): void {
+    this.loadAllLists();
+  }
+
   /**
    * openNewMembershipDialog
    */

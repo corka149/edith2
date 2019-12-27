@@ -4,6 +4,9 @@
     <button mat-raised-button color="primary" (click)="openNewListDialog()">
         {{ "new shopping list" | translate:"shopping" }}
     </button>
+    <button mat-mini-fab color="accent" (click)="refresh()">
+        <mat-icon>refresh</mat-icon>
+    </button>
 </div>
 
 <mat-tab-group [selectedIndex]="currentTab.index">

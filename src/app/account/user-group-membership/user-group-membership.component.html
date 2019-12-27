@@ -8,6 +8,14 @@
     </mat-hint>
 </p>
 
+<div class="button-row">
+    <span class="filler"></span>
+    <button mat-raised-button color="primary" (click)="openNewMembershipDialog()">{{ "New invitation" | translate:"account"}}</button>
+    <button mat-mini-fab color="accent" (click)="refresh()">
+        <mat-icon>refresh</mat-icon>
+    </button>
+</div>
+
 <mat-tab-group>
     <!-- Created invitations -->
     <mat-tab label="{{ 'Created invitations' | translate:'account' }}">
@@ -102,7 +110,3 @@
         </div>
     </mat-tab>
 </mat-tab-group>
-
-<div style="padding-top: 2rem;">
-    <button mat-raised-button color="primary" (click)="openNewMembershipDialog()">{{ "New invitation" | translate:"account"}}</button>
-</div>

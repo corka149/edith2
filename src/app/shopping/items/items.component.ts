@@ -79,6 +79,10 @@ export class ItemsComponent implements OnInit {
     );
   }
 
+  refresh(): void {
+    this.loadItems(this.shoppingList.id);
+  }
+
   /**
    * back
    */

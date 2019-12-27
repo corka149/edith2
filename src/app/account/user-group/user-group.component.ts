@@ -61,13 +61,15 @@ export class UserGroupComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subscribtions.add(this.userGroupService.getUserGroups()
-      .subscribe(groups => this.userGroups = groups.sort((a, b) => a.id - b.id))
-    );
+    this.loadGroups();
   }
 
   ngOnDestroy() {
     this.subscribtions.unsubscribe();
+  }
+
+  refresh(): void {
+    this.loadGroups();
   }
 
   /**
@@ -136,5 +138,11 @@ export class UserGroupComponent implements OnInit, OnDestroy {
         }
       ));
     }
+  }
+
+  private loadGroups(): void {
+    this.subscribtions.add(this.userGroupService.getUserGroups()
+      .subscribe(groups => this.userGroups = groups.sort((a, b) => a.id - b.id))
+    );
   }
 }

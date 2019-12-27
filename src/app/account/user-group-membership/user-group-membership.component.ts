@@ -90,6 +90,10 @@ export class UserGroupMembershipComponent implements OnInit, OnDestroy {
     this.subscribtions.unsubscribe();
   }
 
+  refresh(): void {
+    this.reloadMemberships();
+  }
+
   public deleteInvitation(invitation: Invitation) {
     this.subscribtions.add(
       this.invitationService.deleteInvitation(invitation).subscribe(
