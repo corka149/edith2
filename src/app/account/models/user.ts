@@ -10,8 +10,8 @@ export class User {
 export class UserUpdate {
 
     constructor(
-        public name: string,
-        public password: string,
+        public name?: string,
+        public password?: string,
     ) {}
 
 }
