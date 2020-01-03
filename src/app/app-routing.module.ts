@@ -6,6 +6,7 @@ import { UserGroupComponent } from './account/user-group/user-group.component';
 import { UserGroupMembershipComponent } from './account/user-group-membership/user-group-membership.component';
 import { ShoppingListOverviewComponent } from './shopping/shopping-list-overview/shopping-list-overview.component';
 import { ItemsComponent } from './shopping/items/items.component';
+import { UserProfileComponent } from './account/user-profile/user-profile.component';
 
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'usergroups/management', component: UserGroupComponent},
   { path: 'usergroups/membership', component: UserGroupMembershipComponent},
   { path: 'signin', component: LoginComponent},
+  { path: 'userprofile', component: UserProfileComponent},
   { path: '**', component: WelcomeComponent}
 ];
 

@@ -217,6 +217,9 @@ export class Translations {
         'Membership': {
             de: 'Mitgliedschaft',
             en: 'Membership'
+        },
+        'User profile': {
+            de: 'Benutzereinstellungen'
         }
     };
 

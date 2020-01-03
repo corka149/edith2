@@ -44,6 +44,8 @@
             <a mat-menu-item routerLink="usergroups/membership">{{ "Membership" | translate}}</a>
           </mat-menu>
         </div>
+
+        <a mat-list-item routerLink="userprofile">{{ "User profile" | translate}}</a>
       </mat-nav-list>
 
       <p *ngIf="!authService.isAuthenticated" style="margin: 1rem;">

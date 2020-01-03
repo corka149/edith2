@@ -10,6 +10,8 @@ import { UserGroupService } from './services/user-group.service';
 import { UserGroupComponent, UserGroupDialogComponent } from './user-group/user-group.component';
 import { UserGroupMembershipComponent, UserGroupMembershipDialogComponent } from './user-group-membership/user-group-membership.component';
 import { InvitationService } from './services/invitation.service';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserService } from './services/user.service';
 
 
 
@@ -19,7 +21,8 @@ import { InvitationService } from './services/invitation.service';
     UserGroupComponent,
     UserGroupDialogComponent,
     UserGroupMembershipComponent,
-    UserGroupMembershipDialogComponent
+    UserGroupMembershipDialogComponent,
+    UserProfileComponent
   ],
   imports: [
     CommonModule,
@@ -31,7 +34,8 @@ import { InvitationService } from './services/invitation.service';
   providers: [
     AuthenticationService,
     UserGroupService,
-    InvitationService
+    InvitationService,
+    UserService
   ],
   entryComponents: [
     UserGroupDialogComponent,

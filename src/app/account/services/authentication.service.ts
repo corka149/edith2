@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { User } from '../models/user';
 import { catchError, tap, map } from 'rxjs/operators';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class AuthenticationService {
   private authenticated = false;
 
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private userService: UserService
   ) { }
 
   /**
@@ -43,7 +45,7 @@ export class AuthenticationService {
   }
 
   public getUserDetails(): Observable<User> {
-    return this.httpClient.get<User>('/jarvis/v1/accounts/users/current')
+    return this.userService.getUser()
       .pipe(
         tap(user => {
           this.authenticated = !!user && !!user.name;
