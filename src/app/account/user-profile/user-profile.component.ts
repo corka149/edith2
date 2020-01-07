@@ -13,10 +13,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   userProfileForm: FormGroup = this.fb.group({
     name: ['', [Validators.minLength(3), Validators.required]],
-    password: [''],
-    confirmPassword: ['']
+  });
+  passwordForm: FormGroup = this.fb.group({
+    password: ['', [Validators.minLength(8), Validators.required]],
+    confirmPassword: ['', [Validators.minLength(8), Validators.required]]
   });
   currentUser: User;
+  triedToSavePassword = false;
 
   private subscribtions = new Subscription();
 
@@ -38,20 +41,32 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   get password(): AbstractControl {
-    return this.userProfileForm.get('password');
+    return this.passwordForm.get('password');
   }
 
   get confirmPassword(): AbstractControl {
-    return this.userProfileForm.get('confirmPassword');
+    return this.passwordForm.get('confirmPassword');
   }
-  save(): void {
+  saveProfile(): void {
     this.subscribtions.add(
       this.userService.updateUser(
-        new UserUpdate(this.name.value, this.password.value)
+        new UserUpdate(this.name.value)
       ).subscribe(
-        result => this.loadUser()
+        result => this.currentUser.name = result.name
       )
     );
+  }
+  savePassword(): void {
+    this.triedToSavePassword = true;
+    if (this.password.value === this.confirmPassword.value) {
+      this.subscribtions.add(
+        this.userService.updateUser(
+          new UserUpdate(this.currentUser.name, this.password.value)
+        ).subscribe(
+          result => this.loadUser()
+        )
+      );
+    }
   }
 
   private loadUser() {

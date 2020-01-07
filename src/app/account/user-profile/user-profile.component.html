@@ -1,37 +1,64 @@
 <div *ngIf="currentUser">
     <h2>{{"Settings of" | translate: "account"}} {{ currentUser.name }}</h2>
 
-    <form [formGroup]="userProfileForm" (ngSubmit)="save()">
-        <div>
-            <mat-form-field style="width: 100%;">
-                <mat-label>{{ "Name" | translate:"account" }}</mat-label>
-                <input matInput type="text" placeholder="{{ 'Name' | translate:'account' }}" formControlName="name"
-                    required>
-                <mat-error *ngIf="name.errors && name.errors.required">{{ "Name is required" | translate:"account" }}
+    <!-- USER PROFILE -->
+    <mat-tab-group>
+        <mat-tab label="{{ 'Update profile' | translate: 'account' }}">
+            <form [formGroup]="userProfileForm" (ngSubmit)="saveProfile()">
+                <div>
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>{{ "Name" | translate:"account" }}</mat-label>
+                        <input matInput type="text" placeholder="{{ 'Name' | translate:'account' }}"
+                            formControlName="name" required>
+                        <mat-error *ngIf="name.errors && name.errors.required">
+                            {{ "Name is required" | translate:"account" }}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div style="display: flex;">
+                    <span class="filler"></span>
+                    <button [disabled]="userProfileForm.invalid" type="submit" mat-mini-fab color="primary">
+                        <mat-icon>save</mat-icon>
+                    </button>
+                </div>
+            </form>
+        </mat-tab>
+
+        <!-- CHANGE PASSWORD -->
+        <mat-tab label="{{ 'Change password' | translate: 'account' }}">
+            <form [formGroup]="passwordForm" (ngSubmit)="savePassword()">
+                <div>
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>{{ "Password" | translate:"account" }}</mat-label>
+                        <input matInput type="password" placeholder="{{ 'Password' | translate:'account' }}"
+                            formControlName="password" required>
+                        <mat-error *ngIf="password.errors && password.errors.required">
+                            {{ "Password is required" | translate:"account" }}</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>{{ "Confirm password" | translate:"account" }}</mat-label>
+                        <input matInput type="password" placeholder="{{ 'Confirm password' | translate:'account' }}"
+                            formControlName="confirmPassword" required>
+                        <mat-error *ngIf="password.errors && password.errors.required">
+                            {{ "Confirm password is required" | translate:"account" }}</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <mat-error *ngIf="triedToSavePassword && password.value !== confirmPassword.value">
+                    {{ "Passwords do not equal" | translate:"account" }}
                 </mat-error>
-            </mat-form-field>
-        </div>
 
-        <div>
-            <mat-form-field style="width: 100%;">
-                <mat-label>{{ "Password" | translate:"account" }}</mat-label>
-                <input matInput type="password" placeholder="{{ 'Password' | translate:'account' }}"
-                    formControlName="password">
-            </mat-form-field>
-        </div>
-
-        <div>
-            <mat-form-field style="width: 100%;">
-                <mat-label>{{ "Confirm password" | translate:"account" }}</mat-label>
-                <input matInput type="password" placeholder="{{ 'Confirm password' | translate:'account' }}"
-                    formControlName="confirmPassword">
-            </mat-form-field>
-        </div>
-
-        <div style="display: flex;">
-            <span class="filler"></span>
-            <button [disabled]="userProfileForm.invalid" type="submit" mat-flat-button
-                color="primary">{{ "Submit" | translate:"account" }}</button>
-        </div>
-    </form>
+                <div style="display: flex; margin-bottom: 2rem;">
+                    <span class="filler"></span>
+                    <button [disabled]="passwordForm.invalid" type="submit" mat-mini-fab color="primary">
+                        <mat-icon>save</mat-icon>
+                    </button>
+                </div>
+            </form>
+        </mat-tab>
+    </mat-tab-group>
 </div>
