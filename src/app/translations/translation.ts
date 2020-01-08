@@ -118,6 +118,16 @@ export class Translations {
                 de: 'Ein Gruppenersteller kann Nutzer in seine Gruppe einladen mittels der Mitgliedschaftsfunktion.'
             }, 'Users can be assigned to groups to give them access to certain things like shopping lists.': {
                 de: 'Benutzer können Gruppen zugewiesen werden. Dadurch bekommen sie Zugang zu Dingen, die der Gruppe gehörten, wie Einkaufslisten.'
+            }, 'Change password': {
+                de: 'Passwort ändern'
+            }, 'Update profile': {
+                de: 'Profil aktualisieren'
+            }, 'Confirm password': {
+                de: 'Bestätige Passwort'
+            }, 'Settings of': {
+                de: 'Einstellungen von'
+            }, 'Confirm password is required': {
+                de: 'Bestätigungspasswort ist erforderlich'
             }
         },
         shopping: {

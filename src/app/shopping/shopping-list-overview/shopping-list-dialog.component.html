@@ -11,7 +11,7 @@
             <input matInput [matDatepicker]="picker" placeholder="{{ 'Choose a date' | translate: 'shopping' }}"
                 [formControl]="plannedFor" required>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <mat-datepicker touchUi #picker></mat-datepicker>
         </mat-form-field>
 
         <!-- BELONGS TO -->
