@@ -128,6 +128,8 @@ export class Translations {
                 de: 'Einstellungen von'
             }, 'Confirm password is required': {
                 de: 'Bestätigungspasswort ist erforderlich'
+            }, 'Couldn\'t update password': {
+                de: 'Passwortaktualisierung fehlgeschlagen. (Passwortanforderungen nicht erfüllt? 8 Zeichen, 1 Großbuchstabe, 1 Kleinbuchstabe, 1 Sonderzeichen )'
             }
         },
         shopping: {

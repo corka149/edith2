@@ -58,6 +58,10 @@
                         <mat-icon>save</mat-icon>
                     </button>
                 </div>
+                <div style="display: flex;">
+                    <span class="half-filler"></span>
+                    <mat-error *ngIf="failedToLogin">{{ "Couldn't update password" | translate:"account" }}</mat-error>
+                </div>
             </form>
         </mat-tab>
     </mat-tab-group>

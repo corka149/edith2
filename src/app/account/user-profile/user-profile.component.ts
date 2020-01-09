@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { UserService } from '../services/user.service';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import { UserUpdate, User } from '../models/user';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-profile',
@@ -20,6 +21,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   });
   currentUser: User;
   triedToSavePassword = false;
+  failedToLogin = false;
 
   private subscribtions = new Subscription();
 
@@ -62,6 +64,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.subscribtions.add(
         this.userService.updateUser(
           new UserUpdate(this.currentUser.name, this.password.value)
+        ).pipe(
+          catchError(error => {
+            console.log('Error on password update');
+            console.log(error);
+            this.failedToLogin = true;
+            return of(null);
+          })
         ).subscribe(
           result => this.loadUser()
         )
