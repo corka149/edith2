@@ -60,7 +60,7 @@
                 </div>
                 <div style="display: flex;">
                     <span class="half-filler"></span>
-                    <mat-error *ngIf="failedToLogin">{{ "Couldn't update password" | translate:"account" }}</mat-error>
+                    <mat-error *ngIf="failedToChangePassword">{{ "Couldn't update password" | translate:"account" }}</mat-error>
                 </div>
             </form>
         </mat-tab>

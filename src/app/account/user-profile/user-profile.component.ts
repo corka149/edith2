@@ -21,7 +21,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   });
   currentUser: User;
   triedToSavePassword = false;
-  failedToLogin = false;
+  failedToChangePassword = false;
 
   private subscribtions = new Subscription();
 
@@ -68,11 +68,16 @@ export class UserProfileComponent implements OnInit, OnDestroy {
           catchError(error => {
             console.log('Error on password update');
             console.log(error);
-            this.failedToLogin = true;
+            this.failedToChangePassword = true;
             return of(null);
           })
         ).subscribe(
-          result => this.loadUser()
+          result => {
+            if (result) {
+              this.failedToChangePassword = false;
+              this.passwordForm.reset();
+            }
+          }
         )
       );
     }

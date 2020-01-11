@@ -130,6 +130,8 @@ export class Translations {
                 de: 'Bestätigungspasswort ist erforderlich'
             }, 'Couldn\'t update password': {
                 de: 'Passwortaktualisierung fehlgeschlagen. (Passwortanforderungen nicht erfüllt? 8 Zeichen, 1 Großbuchstabe, 1 Kleinbuchstabe, 1 Sonderzeichen )'
+            }, 'Passwords do not equal': {
+                de: 'Passwörter unterscheiden sich'
             }
         },
         shopping: {
