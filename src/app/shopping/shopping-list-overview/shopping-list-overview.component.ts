@@ -42,7 +42,7 @@ export class ShoppingListDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscribtions.add(
-      this.userGroupService.getUserGroups().subscribe(
+      this.userGroupService.getUserGroupsByMembership().subscribe(
         result => this.groups = result
       )
     );

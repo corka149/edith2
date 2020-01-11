@@ -22,6 +22,14 @@ export class UserGroupService {
   }
 
   /**
+   * getUserGroupsByMembership
+   */
+  public getUserGroupsByMembership(): Observable<UserGroup[]> {
+    const query = `?by_membership=true`;
+    return this.httpClient.get<UserGroup[]>(UserGroupService.USER_GROUP + query);
+  }
+
+  /**
    * getUserGroup
    */
   public getUserGroup(id: number): Observable<UserGroup> {
